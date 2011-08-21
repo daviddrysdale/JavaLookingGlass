@@ -47,12 +47,16 @@
  	       style="@android:style/TextAppearance.Medium"
  	       android:layout_width="fill_parent"
  	       android:layout_height="wrap_content"
+ 	       android:layout_marginTop="3dp"
+           android:layout_marginBottom="3dp"
  	       android:text=""/>
  	       
          <LinearLayout android:id="@+id/superclass_layout" 
            android:orientation="horizontal"
            android:layout_width="fill_parent"
-           android:layout_height="wrap_content">
+           android:layout_height="wrap_content"
+  	       android:layout_marginTop="3dp"
+           android:layout_marginBottom="3dp">
            <TextView 
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -64,35 +68,35 @@
               android:text="&lt;unknown&gt;" />
         </LinearLayout>
  
- 	    <TextView android:id="@+id/jcls_show_interfaces"
+ 	    <Button android:id="@+id/jcls_show_interfaces"
  	       style="@android:style/TextAppearance.Medium"
  	       android:layout_width="fill_parent"
  	       android:layout_height="wrap_content"
  	       android:onClick="showInterfaces"
  	       android:text="Interfaces Implemented"/> 
   
-        <TextView android:id="@+id/jcls_show_constructors"
+        <Button android:id="@+id/jcls_show_constructors"
  	       style="@android:style/TextAppearance.Medium"
  	       android:layout_width="fill_parent"
  	       android:layout_height="wrap_content"
  	       android:onClick="showConstructors"
  	       android:text="Constructors"/>
  	       
- 	    <TextView android:id="@+id/jcls_show_methods"
+ 	    <Button android:id="@+id/jcls_show_methods"
  	       style="@android:style/TextAppearance.Medium"
  	       android:layout_width="fill_parent"
  	       android:layout_height="wrap_content"
  	       android:onClick="showMethods"
  	       android:text="Methods"/>  
  	  	
- 	    <TextView android:id="@+id/jcls_show_fields"
+ 	    <Button android:id="@+id/jcls_show_fields"
  	       style="@android:style/TextAppearance.Medium"
  	       android:layout_width="fill_parent"
  	       android:layout_height="wrap_content"
  	       android:onClick="showFields"
  	       android:text="Fields"/>  
 	       
- 	    <TextView android:id="@+id/jcls_show_classes"
+ 	    <Button android:id="@+id/jcls_show_classes"
  	       style="@android:style/TextAppearance.Medium"
  	       android:layout_width="fill_parent"
  	       android:layout_height="wrap_content"
