@@ -75,6 +75,26 @@
  	       android:onClick="showInterfaces"
  	       android:text="Interfaces Implemented"/> 
   
+  	    <LinearLayout android:id="@+id/include_inherited_layout" 
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+  	       android:layout_marginTop="5dp"
+           android:layout_marginBottom="3dp">
+           <CheckBox android:id="@+id/jcls_include_inherited"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" />
+           <TextView
+              style="@android:style/TextAppearance.Small"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content" 
+              android:layout_gravity="center"
+              android:layout_marginLeft="3dp"
+              android:layout_weight="1"
+              android:text="Include inherited" />
+        </LinearLayout>
+ 
+  
         <Button android:id="@+id/jcls_show_constructors"
  	       style="@android:style/TextAppearance.Medium"
  	       android:layout_width="fill_parent"
