@@ -60,11 +60,13 @@
            <TextView 
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="extends " />
-           <TextView android:id="@+id/jcls_superclass"
+              android:text="extends  " />
+           <Button android:id="@+id/jcls_superclass"
+              style="@android:style/TextAppearance.Medium"
               android:layout_height="wrap_content"
               android:layout_width="wrap_content" 
               android:layout_weight="1"
+              android:onClick="superClassClicked"
               android:text="&lt;unknown&gt;" />
         </LinearLayout>
  

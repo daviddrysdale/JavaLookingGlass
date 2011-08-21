@@ -13,6 +13,7 @@ public class JavaClassActivity extends Activity {
 
   private String mClassName;
   private Class<?> mClass;
+  private String mSuperClassName;
   
   /** Called when the activity is first created. */
   @Override
@@ -70,8 +71,11 @@ public class JavaClassActivity extends Activity {
 
       Class<?> superCls = mClass.getSuperclass();
       if (superCls != null) {
-        ((TextView)findViewById(R.id.jcls_superclass)).setText(superCls.getName());
-      }    
+        mSuperClassName = superCls.getName();
+        ((TextView)findViewById(R.id.jcls_superclass)).setText(mSuperClassName);
+      } else {
+        mSuperClassName = null;
+      }
       
       // TODO fill out
       
@@ -83,5 +87,14 @@ public class JavaClassActivity extends Activity {
       findViewById(R.id.error_message).setVisibility(View.VISIBLE);
       findViewById(R.id.jcls_results).setVisibility(View.GONE);         
     }
+  }
+  
+  public void superClassClicked(View view) {
+    Log.i(TAG, "User clicked on super class name: " + mSuperClassName);
+    if (mSuperClassName == null) return;
+    Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
+    intent.putExtra("jclass_name", mSuperClassName);
+    Log.i(TAG, "start JavaClassActivity for " + mSuperClassName);
+    startActivity(intent);
   }
 }
