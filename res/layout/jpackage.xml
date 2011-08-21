@@ -10,12 +10,12 @@
      android:layout_height="0dp" 
      android:layout_weight="1.0"
      android:paddingTop="1dp">
-        
+    
     <RelativeLayout
        android:layout_width="fill_parent"
        android:layout_height="0dp"
        android:layout_weight="1.0">
-       
+      
       <TextView android:id="@+id/jpkg_name"
          style="@android:style/TextAppearance.Large"
          android:layout_width="wrap_content"
@@ -37,107 +37,114 @@
          android:layout_marginLeft="5dp"
          android:text="Package Not Found" />
          
-      <LinearLayout android:id="@+id/impl_title_layout" 
-         android:layout_below="@id/jpkg_name"
-         android:orientation="horizontal"
+      <LinearLayout android:id="@+id/jpkg_results"
+       	 android:layout_below="@id/jpkg_name"
+      	 android:orientation="vertical"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content">
-         <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Implementation Title:" />
-         <TextView android:id="@+id/jkpg_impl_title"
-            android:layout_marginLeft="3dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" 
-            android:layout_weight="1"
-            android:text="Unknown" />
-      </LinearLayout>
-
-      <LinearLayout android:id="@+id/impl_vendor_layout" 
-         android:layout_below="@id/impl_title_layout"
-         android:orientation="horizontal"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content">
-         <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Implementation Vendor:" />
-         <TextView android:id="@+id/jpkg_impl_vendor"
-            android:layout_marginLeft="3dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" 
-            android:layout_weight="1"
-            android:text="Unknown" />
-      </LinearLayout>
-
-      <LinearLayout android:id="@+id/impl_version_layout" 
-         android:layout_below="@id/impl_vendor_layout"
-         android:orientation="horizontal"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content">
-         <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Implementation Version:" />
-         <TextView android:id="@+id/jpkg_impl_version"
-            android:layout_marginLeft="3dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" 
-            android:layout_weight="1"
-            android:text="Unknown" />
-      </LinearLayout>
-   
-      <LinearLayout android:id="@+id/spec_title_layout" 
-         android:layout_below="@id/impl_version_layout"
-         android:orientation="horizontal"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content">
-         <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Specification Title:" />
-         <TextView android:id="@+id/jpkg_spec_title"
-            android:layout_marginLeft="3dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" 
-            android:layout_weight="1"
-            android:text="Unknown" />
-      </LinearLayout>
-
-      <LinearLayout android:id="@+id/spec_vendor_layout" 
-         android:layout_below="@id/spec_title_layout"
-         android:orientation="horizontal"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content">
-         <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Specification Vendor:" />
-         <TextView android:id="@+id/jpkg_spec_vendor"
-            android:layout_marginLeft="3dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" 
-            android:layout_weight="1"
-            android:text="Unknown" />
-      </LinearLayout>
-
-      <LinearLayout android:id="@+id/spec_version_layout" 
-         android:layout_below="@id/spec_vendor_layout"
-         android:orientation="horizontal"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content">
-         <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Specification Version:" />
-         <TextView android:id="@+id/jpkg_spec_version"
-            android:layout_marginLeft="3dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" 
-            android:layout_weight="1"
-            android:text="Unknown" />
-      </LinearLayout>
+ 
+        <LinearLayout android:id="@+id/impl_title_layout" 
+           android:layout_below="@id/jpkg_name"
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content">
+           <TextView 
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Implementation Title:" />
+           <TextView android:id="@+id/jkpg_impl_title"
+              android:layout_marginLeft="3dp"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content" 
+              android:layout_weight="1"
+              android:text="Unknown" />
+        </LinearLayout>
+  
+        <LinearLayout android:id="@+id/impl_vendor_layout" 
+           android:layout_below="@id/impl_title_layout"
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content">
+           <TextView 
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Implementation Vendor:" />
+           <TextView android:id="@+id/jpkg_impl_vendor"
+              android:layout_marginLeft="3dp"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content" 
+              android:layout_weight="1"
+              android:text="Unknown" />
+        </LinearLayout>
+  
+        <LinearLayout android:id="@+id/impl_version_layout" 
+           android:layout_below="@id/impl_vendor_layout"
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content">
+           <TextView 
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Implementation Version:" />
+           <TextView android:id="@+id/jpkg_impl_version"
+              android:layout_marginLeft="3dp"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content" 
+              android:layout_weight="1"
+              android:text="Unknown" />
+        </LinearLayout>
+     
+        <LinearLayout android:id="@+id/spec_title_layout" 
+           android:layout_below="@id/impl_version_layout"
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content">
+           <TextView 
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Specification Title:" />
+           <TextView android:id="@+id/jpkg_spec_title"
+              android:layout_marginLeft="3dp"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content" 
+              android:layout_weight="1"
+              android:text="Unknown" />
+        </LinearLayout>
+  
+        <LinearLayout android:id="@+id/spec_vendor_layout" 
+           android:layout_below="@id/spec_title_layout"
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content">
+           <TextView 
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Specification Vendor:" />
+           <TextView android:id="@+id/jpkg_spec_vendor"
+              android:layout_marginLeft="3dp"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content" 
+              android:layout_weight="1"
+              android:text="Unknown" />
+        </LinearLayout>
+  
+        <LinearLayout android:id="@+id/spec_version_layout" 
+           android:layout_below="@id/spec_vendor_layout"
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content">
+           <TextView 
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Specification Version:" />
+           <TextView android:id="@+id/jpkg_spec_version"
+              android:layout_marginLeft="3dp"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content" 
+              android:layout_weight="1"
+              android:text="Unknown" />
+        </LinearLayout>
+      </LinearLayout>      	     
     </RelativeLayout>
   </ScrollView>
 </LinearLayout>

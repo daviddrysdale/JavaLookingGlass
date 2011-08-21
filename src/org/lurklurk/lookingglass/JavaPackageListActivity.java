@@ -11,8 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class JavaPackageListActivity extends ListActivity
-{
+public class JavaPackageListActivity extends ListActivity {
   private static final String TAG = "JavaPackageListActivity";
 
   /** Called when the activity is first created. */

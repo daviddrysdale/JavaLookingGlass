@@ -7,8 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-public class JavaPackageActivity extends Activity
-{
+public class JavaPackageActivity extends Activity {
   private static final String TAG = "JavaPackageActivity";
   private static final String PACKAGE_NAME_KEY = "mPackageName";
 
@@ -63,21 +62,11 @@ public class JavaPackageActivity extends Activity
       ((TextView)findViewById(R.id.jpkg_spec_version)).setText(mPackage.getSpecificationVersion());
 
       findViewById(R.id.error_message).setVisibility(View.GONE);
-      findViewById(R.id.impl_title_layout).setVisibility(View.VISIBLE);      
-      findViewById(R.id.impl_vendor_layout).setVisibility(View.VISIBLE);      
-      findViewById(R.id.impl_version_layout).setVisibility(View.VISIBLE);      
-      findViewById(R.id.spec_title_layout).setVisibility(View.VISIBLE);      
-      findViewById(R.id.spec_vendor_layout).setVisibility(View.VISIBLE);      
-      findViewById(R.id.spec_version_layout).setVisibility(View.VISIBLE);      
+      findViewById(R.id.jpkg_results).setVisibility(View.VISIBLE);           
     } else {
       Log.w(TAG, "Failed to get package info for "+ mPackageName);
       findViewById(R.id.error_message).setVisibility(View.VISIBLE);
-      findViewById(R.id.impl_title_layout).setVisibility(View.GONE);      
-      findViewById(R.id.impl_vendor_layout).setVisibility(View.GONE);      
-      findViewById(R.id.impl_version_layout).setVisibility(View.GONE);      
-      findViewById(R.id.spec_title_layout).setVisibility(View.GONE);      
-      findViewById(R.id.spec_vendor_layout).setVisibility(View.GONE);      
-      findViewById(R.id.spec_version_layout).setVisibility(View.GONE);      
+      findViewById(R.id.jpkg_results).setVisibility(View.GONE);      
     }
   }
 }
