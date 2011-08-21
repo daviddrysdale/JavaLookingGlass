@@ -22,5 +22,8 @@
                   android:label="Java Package List">
         </activity>
 
+        <activity android:name=".JavaClassActivity"
+                  android:label="Java Class">
+        </activity>
     </application>
 </manifest>

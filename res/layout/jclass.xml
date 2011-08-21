@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical"
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent">
+  
+  <ScrollView
+     android:layout_width="wrap_content"
+     android:layout_height="0dp" 
+     android:layout_weight="1.0"
+     android:paddingTop="1dp">
+        
+    <RelativeLayout
+       android:layout_width="fill_parent"
+       android:layout_height="0dp"
+       android:layout_marginLeft="5dp"
+       android:layout_weight="1.0">
+       
+      <TextView android:id="@+id/jcls_name"
+         style="@android:style/TextAppearance.Large"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="5dp"
+         android:layout_marginBottom="5dp"
+         android:layout_marginLeft="5dp"
+         android:text="class.name" />
+
+      <TextView android:id="@+id/error_message"
+         android:layout_below="@id/jcls_name"
+         style="@android:style/TextAppearance.Medium"
+         android:visibility="gone"
+         android:textColor="#F00"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="5dp"
+         android:layout_marginBottom="5dp"
+         android:text="Package Not Found" />
+         
+      <LinearLayout android:id="@+id/jcls_results"
+       	 android:layout_below="@id/jcls_name"
+      	 android:orientation="vertical"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content">
+ 
+         <TextView android:id="@+id/jcls_modifiers"
+ 	       style="@android:style/TextAppearance.Medium"
+ 	       android:layout_width="fill_parent"
+ 	       android:layout_height="wrap_content"
+ 	       android:text=""/>
+ 	       
+         <LinearLayout android:id="@+id/superclass_layout" 
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content">
+           <TextView 
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="extends " />
+           <TextView android:id="@+id/jcls_superclass"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content" 
+              android:layout_weight="1"
+              android:text="&lt;unknown&gt;" />
+        </LinearLayout>
+ 
+ 	    <TextView android:id="@+id/jcls_show_interfaces"
+ 	       style="@android:style/TextAppearance.Medium"
+ 	       android:layout_width="fill_parent"
+ 	       android:layout_height="wrap_content"
+ 	       android:onClick="showInterfaces"
+ 	       android:text="Interfaces Implemented"/> 
+  
+        <TextView android:id="@+id/jcls_show_constructors"
+ 	       style="@android:style/TextAppearance.Medium"
+ 	       android:layout_width="fill_parent"
+ 	       android:layout_height="wrap_content"
+ 	       android:onClick="showConstructors"
+ 	       android:text="Constructors"/>
+ 	       
+ 	    <TextView android:id="@+id/jcls_show_methods"
+ 	       style="@android:style/TextAppearance.Medium"
+ 	       android:layout_width="fill_parent"
+ 	       android:layout_height="wrap_content"
+ 	       android:onClick="showMethods"
+ 	       android:text="Methods"/>  
+ 	  	
+ 	    <TextView android:id="@+id/jcls_show_fields"
+ 	       style="@android:style/TextAppearance.Medium"
+ 	       android:layout_width="fill_parent"
+ 	       android:layout_height="wrap_content"
+ 	       android:onClick="showFields"
+ 	       android:text="Fields"/>  
+	       
+ 	    <TextView android:id="@+id/jcls_show_classes"
+ 	       style="@android:style/TextAppearance.Medium"
+ 	       android:layout_width="fill_parent"
+ 	       android:layout_height="wrap_content"
+ 	       android:onClick="showClasses"
+ 	       android:text="Classes"/>  
+      </LinearLayout>
+    </RelativeLayout>
+  </ScrollView>
+</LinearLayout>

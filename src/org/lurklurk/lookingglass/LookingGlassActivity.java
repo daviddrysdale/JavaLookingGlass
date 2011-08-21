@@ -17,6 +17,7 @@ public class LookingGlassActivity extends Activity {
     Log.i(TAG, "onCreate");
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
+    // Plumb package name entry through to JavaPackageActivity
     final EditText jpkgEntry = (EditText)findViewById(R.id.lookup_package);
     jpkgEntry.setOnKeyListener(new OnKeyListener() {
       @Override
@@ -27,6 +28,24 @@ public class LookingGlassActivity extends Activity {
           Intent intent = new Intent(LookingGlassActivity.this, JavaPackageActivity.class);
           intent.putExtra("jpackage_name", packageName);
           Log.i(TAG, "start JavaPackageActivity for " + packageName);
+          startActivity(intent);
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+    // Plumb class name entry through to JavaClassActivity
+    final EditText jclsEntry = (EditText)findViewById(R.id.lookup_class);
+    jclsEntry.setOnKeyListener(new OnKeyListener() {
+      @Override
+      public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+            (keyCode == KeyEvent.KEYCODE_ENTER)) {
+          String className = jclsEntry.getText().toString();
+          Intent intent = new Intent(LookingGlassActivity.this, JavaClassActivity.class);
+          intent.putExtra("jclass_name", className);
+          Log.i(TAG, "start JavaClassActivity for " + className);
           startActivity(intent);
           return true;
         } else {
