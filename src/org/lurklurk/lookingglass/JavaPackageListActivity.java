@@ -28,7 +28,7 @@ public class JavaPackageListActivity extends ListActivity
       Log.d(TAG, "found package name: " + pkgNames[ii]);
     }
     
-    ArrayAdapter<String> aa = new ArrayAdapter<String>(this, R.layout.jpkg_list_item, pkgNames);
+    ArrayAdapter<String> aa = new ArrayAdapter<String>(this, R.layout.jpackage_list_item, pkgNames);
     setListAdapter(aa);
     ListView lv = getListView();
     lv.setTextFilterEnabled(true);
