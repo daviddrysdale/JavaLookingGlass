@@ -66,7 +66,6 @@ public class JavaClassActivity extends Activity {
       if ((modifiers & 0x0010) != 0) modDesc += "final ";
       if ((modifiers & 0x0200) != 0) modDesc += "interface ";
       if ((modifiers & 0x0400) != 0) modDesc += "abstract ";
-      if ((modifiers & 0x0001) != 0) modDesc += "public ";      
       ((TextView)findViewById(R.id.jcls_modifiers)).setText(modDesc);
 
       Class<?> superCls = mClass.getSuperclass();
