@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical"
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent">
+  
+  <ScrollView
+     android:layout_width="wrap_content"
+     android:layout_height="0dp" 
+     android:layout_weight="1.0"
+     android:paddingTop="1dp">
+        
+    <RelativeLayout
+       android:layout_width="fill_parent"
+       android:layout_height="0dp"
+       android:layout_weight="1.0">
+       
+      <TextView android:id="@+id/java_head"
+         style="@android:style/TextAppearance.Large"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="5dp"
+         android:layout_marginBottom="5dp"
+         android:layout_marginLeft="5dp"
+         android:text="Java Reflection" />
+      <LinearLayout android:id="@+id/jpkg_layout" 
+         android:layout_below="@id/java_head"
+         android:orientation="horizontal"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content">
+         <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find package:" />
+         <EditText android:id="@+id/lookup_package"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" 
+            android:layout_weight="1" />
+      </LinearLayout>
+      <Button android:id="@+id/list_packages" 
+      	 android:onClick="listJavaPackages"
+         android:layout_below="@id/jpkg_layout"
+         android:layout_height="wrap_content" 
+         android:layout_width="wrap_content" 
+         android:text="List all Java packages" 
+         android:layout_gravity="center" />
+      <LinearLayout android:id="@+id/jkls_layout" 
+         android:layout_below="@id/list_packages"
+         android:orientation="horizontal"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content">
+         <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find class:" />
+         <EditText android:id="@+id/lookup_class"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" 
+            android:layout_weight="1" />
+      </LinearLayout>
+   
+      <TextView android:id="@+id/android_head"
+         android:layout_below="@id/jkls_layout"
+         style="@android:style/TextAppearance.Large"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="5dp"
+         android:layout_marginBottom="5dp"
+         android:layout_marginLeft="5dp"
+         android:text="Android Introspection" />
+      <Button android:id="@+id/list_android_apps" 
+         android:layout_below="@id/android_head"
+         android:layout_height="wrap_content" 
+         android:layout_width="wrap_content" 
+         android:text="List Android applications" 
+         android:layout_gravity="center" />      
+      <Button android:id="@+id/list_android_packages" 
+         android:layout_below="@id/list_android_apps"
+         android:layout_height="wrap_content" 
+         android:layout_width="wrap_content" 
+         android:text="List Android packages" 
+         android:layout_gravity="center" />
+    </RelativeLayout>
+  </ScrollView>
+</LinearLayout>
