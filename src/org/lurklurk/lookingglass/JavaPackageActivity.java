@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 public class JavaPackageActivity extends Activity {
   private static final String TAG = "JavaPackageActivity";
-  private static final String PACKAGE_NAME_KEY = "mPackageName";
 
   private String mPackageName;
   private Package mPackage;
@@ -22,24 +21,8 @@ public class JavaPackageActivity extends Activity {
     setContentView(R.layout.jpackage);
 
     Intent intent = getIntent();
-    if ((intent == null) && (savedInstanceState != null)) {
-      try {
-        Log.i(TAG, "Retrieve stored instance state");
-        mPackageName = savedInstanceState.getString(PACKAGE_NAME_KEY);
-      } catch (Exception e) {
-        Log.e(TAG, "Failed to retrieve instance state "+e);
-      }
-    } else {
-      mPackageName = intent.getStringExtra("jpackage_name");     
-    }
+    mPackageName = intent.getStringExtra("jpackage_name");     
     fillOutResults();
-  }
-  
-  @Override
-  public void onSaveInstanceState(Bundle savedInstanceState) {
-    Log.i(TAG, "save instance state");
-    savedInstanceState.putString(PACKAGE_NAME_KEY, mPackageName);
-    super.onSaveInstanceState(savedInstanceState);
   }
   
   private void fillOutResults() {

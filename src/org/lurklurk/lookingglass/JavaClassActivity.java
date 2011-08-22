@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 public class JavaClassActivity extends Activity {
   private static final String TAG = "JavaClassActivity";
-  private static final String CLASS_NAME_KEY = "mClassName";
 
   private String mClassName;
   private Class<?> mClass;
@@ -23,26 +22,10 @@ public class JavaClassActivity extends Activity {
     setContentView(R.layout.jclass);
 
     Intent intent = getIntent();
-    if ((intent == null) && (savedInstanceState != null)) {
-      try {
-        Log.i(TAG, "Retrieve stored instance state");
-        mClassName = savedInstanceState.getString(CLASS_NAME_KEY);
-      } catch (Exception e) {
-        Log.e(TAG, "Failed to retrieve instance state " + e);
-      }
-    } else {
-      mClassName = intent.getStringExtra("jclass_name");     
-    }
+    mClassName = intent.getStringExtra("jclass_name");  
     fillOutResults();
   }
-  
-  @Override
-  public void onSaveInstanceState(Bundle savedInstanceState) {
-    Log.i(TAG, "save instance state");
-    savedInstanceState.putString(CLASS_NAME_KEY, mClassName);
-    super.onSaveInstanceState(savedInstanceState);
-  }
-  
+   
   private void fillOutResults() {
     if (mClassName == null) {
       Log.e(TAG, "No package name");
