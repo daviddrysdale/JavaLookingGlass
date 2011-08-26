@@ -59,10 +59,7 @@ public class JavaClassActivity extends Activity {
       } else {
         mSuperClassName = null;
       }
-      
-      // TODO fill out
-      
-      
+           
       findViewById(R.id.error_message).setVisibility(View.GONE);
       findViewById(R.id.jcls_results).setVisibility(View.VISIBLE);           
     } else {
@@ -80,4 +77,33 @@ public class JavaClassActivity extends Activity {
     Log.i(TAG, "start JavaClassActivity for " + mSuperClassName);
     startActivity(intent);
   }
+  
+  public void showConstructors(View view) {
+    Log.i(TAG, "start JavaClassConstructorsActivity");
+    Intent intent = new Intent(JavaClassActivity.this, JavaClassConstructorsActivity.class);
+    intent.putExtra("jclass_name", mSuperClassName);
+    startActivity(intent);
+  }
+/*
+  public void showMethods(View view) {
+    Log.i(TAG, "start JavaClassMethodsActivity");
+    Intent intent = new Intent(JavaClassActivity.this, JavaClassMethodsActivity.class);
+    intent.putExtra("jclass_name", mSuperClassName);
+    startActivity(intent);
+  }
+  
+  public void showFields(View view) {
+    Log.i(TAG, "start JavaClassFieldsActivity");
+    Intent intent = new Intent(JavaClassActivity.this, JavaClassFieldsActivity.class);
+    intent.putExtra("jclass_name", mSuperClassName);
+    startActivity(intent);
+  }
+  
+  public void showClasses(View view) {
+    Log.i(TAG, "start JavaClassConstructorsActivity");
+    Intent intent = new Intent(JavaClassActivity.this, JavaClassClassesActivity.class);
+    intent.putExtra("jclass_name", mSuperClassName);
+    startActivity(intent);
+  }
+  */
 }
