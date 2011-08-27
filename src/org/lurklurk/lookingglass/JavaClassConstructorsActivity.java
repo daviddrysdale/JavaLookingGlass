@@ -43,7 +43,7 @@ public class JavaClassConstructorsActivity extends ListActivity {
       Log.d(TAG, "found constructor name: " + ctorNames[ii]);
     }
     
-    ArrayAdapter<String> aa = new ArrayAdapter<String>(this, R.layout.jclass_ctor_list_item, ctorNames);
+    ArrayAdapter<String> aa = new ArrayAdapter<String>(this, R.layout.text_list_item, ctorNames);
     setListAdapter(aa);
     ListView lv = getListView();
     lv.setTextFilterEnabled(true);
