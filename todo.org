@@ -12,6 +12,7 @@
   byte/short/int/long/float/double/boolean/char
 * TODO Link from getPackage() to package display
   although this doesn't seem to work in Android
+  Find package name as initial substring of class name; make it blue and link to package
 * TODO Method display
 * TODO Constructor display
 * DONE Retire pressed triangle PNG

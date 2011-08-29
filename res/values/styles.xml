@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) David Drysdale 2011.  GPLv2 licensed; see LICENSE. -->
+<resources>
+  <style name="mainName" parent="@android:style/TextAppearance.Large">
+    <item name="android:textColor">@color/darkRed</item>
+  </style>
+  <style name="clickableLarge" parent="@android:style/TextAppearance.Large">
+    <item name="android:textColor">@color/linkBlue</item>
+  </style>
+  <style name="clickableMedium" parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@color/linkBlue</item>
+  </style>
+  <style name="clickableSmall" parent="@android:style/TextAppearance.Small">
+    <item name="android:textColor">@color/linkBlue</item>
+  </style>
+  <color name="linkBlue">#00f</color>
+  <color name="darkRed">#F11</color>
+</resources>
+

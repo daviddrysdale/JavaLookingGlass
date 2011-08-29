@@ -41,7 +41,7 @@
       </LinearLayout>
        
       <TextView android:id="@+id/jcls_name"
-         style="@android:style/TextAppearance.Large"
+         style="@style/mainName"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_marginTop="5dp"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:text="extends  " />
          <TextView android:id="@+id/jcls_superclass"
-            style="@android:style/TextAppearance.Medium"
+            style="@style/clickableMedium"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content" 
             android:layout_weight="1"
