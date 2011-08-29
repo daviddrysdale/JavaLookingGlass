@@ -16,4 +16,4 @@
 * TODO Constructor display
 * DONE Retire pressed triangle PNG
   CLOSED: [2011-08-29 Mon 20:04]
-  
+* TODO Changing orientation should remember which sections are expanded  
