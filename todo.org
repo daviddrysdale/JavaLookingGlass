@@ -1,0 +1,19 @@
+* TODO Plumb in include inherited tickbox
+* TODO Cope with array types; include getComponentType()/isArray()
+* TODO Mark interfaces; include isInterface()
+* TODO Use markers for modifiers in Class display
+  Borrow from Eclipse: private/final/static etc
+* TODO Cope with inner classes; include getDeclaringClass()
+* TODO Sort out layout encompassing ListViews
+* TODO Make all clickable text visually consistent
+  No buttons, everything blue
+* TODO Cope with class names with $ in them
+* TODO Check with POD types; include isPrimitive()
+  byte/short/int/long/float/double/boolean/char
+* TODO Link from getPackage() to package display
+  although this doesn't seem to work in Android
+* TODO Method display
+* TODO Constructor display
+* DONE Retire pressed triangle PNG
+  CLOSED: [2011-08-29 Mon 20:04]
+  
