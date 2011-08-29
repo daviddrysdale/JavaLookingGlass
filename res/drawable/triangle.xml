@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) David Drysdale 2011.  GPLv2 licensed; see LICENSE. -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-   <item android:state_pressed="true" android:drawable="@drawable/triangle_down" /> 
-   <item android:state_focused="true" android:drawable="@drawable/triangle_right_hilite" />
-   <item android:drawable="@drawable/triangle_right" />
- </selector>
