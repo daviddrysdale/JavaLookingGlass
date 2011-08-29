@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) David Drysdale 2011.  GPLv2 licensed; see LICENSE. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.lurklurk.lookingglass"
       android:versionCode="1"

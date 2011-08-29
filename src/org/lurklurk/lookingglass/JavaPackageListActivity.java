@@ -1,3 +1,4 @@
+/* Copyright (c) David Drysdale 2011.  GPLv2 licensed; see LICENSE. */
 package org.lurklurk.lookingglass;
 
 import android.app.ListActivity;
