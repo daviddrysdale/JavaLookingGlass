@@ -75,6 +75,8 @@ public class JavaClassActivity extends Activity {
       Log.i(TAG, "Got class info for " + mClassName);
       fillModifiers();
       fillSuperClass();
+      //fillDeclaringClass();
+      //fillComponentType();
       fillInterfaces();
       fillConstructors();
       fillMethods();
@@ -221,7 +223,9 @@ public class JavaClassActivity extends Activity {
     }
     final String[] names = new String[fieldList.length];
     for (int ii=0; ii<names.length; ii++) {
-      names[ii] = fieldList[ii].getName();
+      String fieldName = fieldList[ii].getName();
+      Class fieldType = fieldList[ii].getType();
+      names[ii] = fieldType.getName() + " " + fieldName;
       Log.d(TAG, "found field name: " + names[ii]);
     }
     ListView listView = (ListView) findViewById(R.id.jcls_fields);
@@ -230,12 +234,12 @@ public class JavaClassActivity extends Activity {
     listView.setOnItemClickListener(new OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        /*
-        Intent intent = new Intent(JavaClassActivity.this, JavaFieldActivity.class);
-        intent.putExtra("jclass_name", interfaceNames[position]);
-        Log.i(TAG, "start JavaClassActivity for " + interfaceNames[position] + " = interfaceNames[" + position + "]");
+        Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
+        // Extract the class name from the field description
+        String[] components = names[position].split(" ");
+        intent.putExtra("jclass_name", components[0]);
+        Log.i(TAG, "start JavaClassActivity for " + names[position]);
         startActivity(intent);
-        */
       }
     });          
   }
