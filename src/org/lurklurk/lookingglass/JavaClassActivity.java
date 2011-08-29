@@ -86,6 +86,7 @@ public class JavaClassActivity extends Activity {
     if ((modifiers & 0x0200) != 0) modDesc += "interface ";
     if ((modifiers & 0x0400) != 0) modDesc += "abstract ";
     ((TextView)findViewById(R.id.jcls_modifiers)).setText(modDesc);
+    ((TextView)findViewById(R.id.jcls_cls_or_if)).setText(mClass.isInterface() ? "interface" : "class");
   }
   
   private void fillSuperClass() {
