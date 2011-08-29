@@ -45,28 +45,29 @@
          android:layout_height="wrap_content">
  
          <TextView android:id="@+id/jcls_modifiers"
- 	       style="@android:style/TextAppearance.Medium"
- 	       android:layout_width="fill_parent"
- 	       android:layout_height="wrap_content"
- 	       android:layout_marginTop="3dp"
-           android:layout_marginBottom="3dp"
- 	       android:text=""/>
+ 	    style="@android:style/TextAppearance.Medium"
+ 	    android:layout_width="fill_parent"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+ 	    android:text=""/>
  	       
          <LinearLayout android:id="@+id/superclass_layout" 
-           android:orientation="horizontal"
-           android:layout_width="fill_parent"
-           android:layout_height="wrap_content"
-  	       android:layout_marginTop="3dp"
-           android:layout_marginBottom="3dp">
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+  	    android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp">
            <TextView 
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="extends  " />
-           <Button android:id="@+id/jcls_superclass"
+           <TextView android:id="@+id/jcls_superclass"
               style="@android:style/TextAppearance.Medium"
               android:layout_height="wrap_content"
               android:layout_width="wrap_content" 
               android:layout_weight="1"
+              android:clickable="true"
               android:onClick="superClassClicked"
               android:text="&lt;unknown&gt;" />
          </LinearLayout>
@@ -80,7 +81,7 @@
  	      android:layout_height="wrap_content"
  	      android:adjustViewBounds="true" 
  	      android:scaleType="fitCenter"
- 	      android:src="@drawable/triangle"
+ 	      android:src="@drawable/triangle_right"
  	      android:onClick="toggleInterfaces" />
            <TextView
  	      style="@android:style/TextAppearance.Medium"
@@ -95,9 +96,10 @@
   	    android:visibility="gone"
   	    android:layout_width="fill_parent"
   	    android:layout_height="wrap_content" >
-           <ListView android:id="@+id/jcls_interfaces"
-                     android:layout_width="fill_parent"
-                     android:layout_height="wrap_content" />
+           <ListView 
+              android:id="@+id/jcls_interfaces"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" />
          </LinearLayout>
    
   	 <LinearLayout android:id="@+id/include_inherited_layout" 
@@ -119,7 +121,6 @@
               android:text="Include inherited" />
          </LinearLayout>
 
-
  	 <LinearLayout
  	    android:orientation="horizontal"
  	    android:layout_width="fill_parent"
@@ -129,14 +130,14 @@
  	      android:layout_height="wrap_content"
  	      android:adjustViewBounds="true" 
  	      android:scaleType="fitCenter"
- 	      android:src="@drawable/triangle"
+ 	      android:src="@drawable/triangle_right"
  	      android:onClick="toggleConstructors" />
            <TextView
  	      style="@android:style/TextAppearance.Medium"
  	      android:layout_width="wrap_content"
  	      android:layout_height="wrap_content"
  	      android:layout_gravity="center"
- 	      android:text="Constructors Implemented"/> 
+ 	      android:text="Constructors"/> 
  	 </LinearLayout>
          
   	 <LinearLayout android:id="@+id/jcls_constructors_layout"
@@ -145,8 +146,8 @@
   	    android:layout_width="fill_parent"
   	    android:layout_height="wrap_content" >
            <ListView android:id="@+id/jcls_constructors"
-                     android:layout_width="fill_parent"
-                     android:layout_height="wrap_content" />
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" />
          </LinearLayout>
 
  	 <LinearLayout
@@ -158,7 +159,7 @@
  	      android:layout_height="wrap_content"
  	      android:adjustViewBounds="true" 
  	      android:scaleType="fitCenter"
- 	      android:src="@drawable/triangle"
+ 	      android:src="@drawable/triangle_right"
  	      android:onClick="toggleMethods" />
            <TextView
  	      style="@android:style/TextAppearance.Medium"
@@ -174,8 +175,8 @@
   	    android:layout_width="fill_parent"
   	    android:layout_height="wrap_content" >
            <ListView android:id="@+id/jcls_methods"
-                     android:layout_width="fill_parent"
-                     android:layout_height="wrap_content" />
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" />
          </LinearLayout>
 
  	 <LinearLayout
@@ -187,7 +188,7 @@
  	      android:layout_height="wrap_content"
  	      android:adjustViewBounds="true" 
  	      android:scaleType="fitCenter"
- 	      android:src="@drawable/triangle"
+ 	      android:src="@drawable/triangle_right"
  	      android:onClick="toggleFields" />
            <TextView
  	      style="@android:style/TextAppearance.Medium"
@@ -203,8 +204,8 @@
   	    android:layout_width="fill_parent"
   	    android:layout_height="wrap_content" >
            <ListView android:id="@+id/jcls_fields"
-                     android:layout_width="fill_parent"
-                     android:layout_height="wrap_content" />
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" />
          </LinearLayout>
 
 
@@ -217,14 +218,14 @@
  	      android:layout_height="wrap_content"
  	      android:adjustViewBounds="true" 
  	      android:scaleType="fitCenter"
- 	      android:src="@drawable/triangle"
+ 	      android:src="@drawable/triangle_right"
  	      android:onClick="toggleClasses" />
            <TextView
  	      style="@android:style/TextAppearance.Medium"
  	      android:layout_width="wrap_content"
  	      android:layout_height="wrap_content"
  	      android:layout_gravity="center"
-                                           android:text="Classes"/>
+          android:text="Classes"/>
  	 </LinearLayout>
          
   	 <LinearLayout android:id="@+id/jcls_classes_layout"
@@ -233,8 +234,8 @@
   	    android:layout_width="fill_parent"
   	    android:layout_height="wrap_content" >
            <ListView android:id="@+id/jcls_classes"
-                     android:layout_width="fill_parent"
-                     android:layout_height="wrap_content" />
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" />
          </LinearLayout>
       </LinearLayout>
     </RelativeLayout>
