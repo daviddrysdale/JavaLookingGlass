@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) David Drysdale 2011.  GPLv2 licensed; see LICENSE. -->
+<LinearLayout 
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical"
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent">
+  
+  <RelativeLayout
+     android:layout_width="fill_parent"
+     android:layout_height="0dp"
+     android:layout_marginLeft="5dp"
+     android:layout_weight="1.0">
+    <TextView android:id="@+id/jcls_name"
+       style="@android:style/TextAppearance.Large"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="5dp"
+       android:layout_marginBottom="5dp"
+       android:layout_marginLeft="5dp"
+       android:text="class.name" />
+    
+    <TextView android:id="@+id/error_message"
+       android:layout_below="@id/jcls_name"
+       style="@android:style/TextAppearance.Medium"
+       android:textColor="#F00"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="5dp"
+       android:layout_marginBottom="5dp"
+       android:text="Class Not Found" />
+  </RelativeLayout>
+</LinearLayout>

@@ -36,43 +36,36 @@ public class JavaClassActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     Log.i(TAG, "onCreate");
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.jclass);
+
 
     Intent intent = getIntent();
     mClassName = intent.getStringExtra("jclass_name");  
     fillOutResults();
   }
-
-  private void syncListLayoutDisplay(String name, boolean visible, int buttonId, int layoutId) {
-    Log.d(TAG, "Make " + name + " display visible=" + visible);
-    ImageButton button = (ImageButton) findViewById(buttonId);
-    View listLayout =  findViewById(layoutId);
-    if (visible) {
-      button.setImageResource(R.drawable.triangle_down);
-      listLayout.setVisibility(View.VISIBLE);
-    } else {
-      button.setImageResource(R.drawable.triangle_right);
-      listLayout.setVisibility(View.GONE);      
-    }    
-  }
-   
+  
   private void fillOutResults() {
     if (mClassName == null) {
       Log.e(TAG, "No package name");
       mClassName = "unknown";
     }
-       
-    TextView nameView = (TextView) findViewById(R.id.jcls_name);
-    nameView.setText(mClassName);
-    
     try
     {
       mClass = Class.forName(mClassName);
     } catch (ClassNotFoundException e) {
       mClass = null;
     }
-    if (mClass != null) {
+
+    if (mClass == null) {
+      Log.i(TAG, "Failed to find class info for " + mClassName);
+      setContentView(R.layout.jclass_error);
+      TextView nameView = (TextView) findViewById(R.id.jcls_name);
+      nameView.setText(mClassName);     
+    } else {
       Log.i(TAG, "Got class info for " + mClassName);
+      setContentView(R.layout.jclass);
+      TextView nameView = (TextView) findViewById(R.id.jcls_name);
+      nameView.setText(mClassName);
+    
       fillModifiers();
       fillSuperClass();
       //fillDeclaringClass();
@@ -82,13 +75,6 @@ public class JavaClassActivity extends Activity {
       fillMethods();
       fillFields();
       fillClasses();
-      
-      findViewById(R.id.error_message).setVisibility(View.GONE);
-      findViewById(R.id.jcls_results).setVisibility(View.VISIBLE);           
-    } else {
-      Log.w(TAG, "Class "+ mClassName + " not found");
-      findViewById(R.id.error_message).setVisibility(View.VISIBLE);
-      findViewById(R.id.jcls_results).setVisibility(View.GONE);         
     }
   }
 
@@ -224,7 +210,7 @@ public class JavaClassActivity extends Activity {
     final String[] names = new String[fieldList.length];
     for (int ii=0; ii<names.length; ii++) {
       String fieldName = fieldList[ii].getName();
-      Class fieldType = fieldList[ii].getType();
+      Class<?> fieldType = fieldList[ii].getType();
       names[ii] = fieldType.getName() + " " + fieldName;
       Log.d(TAG, "found field name: " + names[ii]);
     }
@@ -280,4 +266,18 @@ public class JavaClassActivity extends Activity {
     Log.i(TAG, "Toggle display of " + mClassName + " classes to be visible=" + mClassesVisible);
     syncListLayoutDisplay("classes", mClassesVisible, R.id.jcls_toggle_classes, R.id.jcls_classes_layout);
   }
+  
+  private void syncListLayoutDisplay(String name, boolean visible, int buttonId, int layoutId) {
+    Log.d(TAG, "Make " + name + " display visible=" + visible);
+    ImageButton button = (ImageButton) findViewById(buttonId);
+    View listLayout =  findViewById(layoutId);
+    if (visible) {
+      button.setImageResource(R.drawable.triangle_down);
+      listLayout.setVisibility(View.VISIBLE);
+    } else {
+      button.setImageResource(R.drawable.triangle_right);
+      listLayout.setVisibility(View.GONE);      
+    }    
+  }
+ 
 }
