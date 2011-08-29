@@ -68,21 +68,43 @@
               android:layout_weight="1"
               android:onClick="superClassClicked"
               android:text="&lt;unknown&gt;" />
-        </LinearLayout>
+         </LinearLayout>
  
- 	    <Button android:id="@+id/jcls_show_interfaces"
- 	       style="@android:style/TextAppearance.Medium"
- 	       android:layout_width="fill_parent"
- 	       android:layout_height="wrap_content"
- 	       android:onClick="showInterfaces"
- 	       android:text="Interfaces Implemented"/> 
-  
-  	    <LinearLayout android:id="@+id/include_inherited_layout" 
-           android:orientation="horizontal"
-           android:layout_width="fill_parent"
-           android:layout_height="wrap_content"
-  	       android:layout_marginTop="5dp"
-           android:layout_marginBottom="3dp">
+ 	 <LinearLayout
+ 	    android:orientation="horizontal"
+ 	    android:layout_width="fill_parent"
+ 	    android:layout_height="wrap_content">
+ 	   <ImageButton android:id="@+id/jcls_toggle_interfaces"
+ 	      android:layout_width="wrap_content"
+ 	      android:layout_height="wrap_content"
+ 	      android:adjustViewBounds="true" 
+ 	      android:scaleType="fitCenter"
+ 	      android:src="@drawable/triangle"
+ 	      android:onClick="toggleInterfaces" />
+           <TextView
+ 	      style="@android:style/TextAppearance.Medium"
+ 	      android:layout_width="wrap_content"
+ 	      android:layout_height="wrap_content"
+ 	      android:layout_gravity="center"
+ 	      android:text="Interfaces Implemented"/> 
+ 	 </LinearLayout>
+         
+  	 <LinearLayout android:id="@+id/jcls_interfaces_layout"
+  	    android:orientation="vertical"
+  	    android:visibility="gone"
+  	    android:layout_width="fill_parent"
+  	    android:layout_height="wrap_content" >
+           <ListView android:id="@+id/jcls_interfaces"
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content" />
+         </LinearLayout>
+   
+  	 <LinearLayout android:id="@+id/include_inherited_layout" 
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+  	    android:layout_marginTop="5dp"
+            android:layout_marginBottom="3dp">
            <CheckBox android:id="@+id/jcls_include_inherited"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content" />
@@ -94,36 +116,125 @@
               android:layout_marginLeft="3dp"
               android:layout_weight="1"
               android:text="Include inherited" />
-        </LinearLayout>
- 
-  
-        <Button android:id="@+id/jcls_show_constructors"
- 	       style="@android:style/TextAppearance.Medium"
- 	       android:layout_width="fill_parent"
- 	       android:layout_height="wrap_content"
- 	       android:onClick="showConstructors"
- 	       android:text="Constructors"/>
- 	       
- 	    <Button android:id="@+id/jcls_show_methods"
- 	       style="@android:style/TextAppearance.Medium"
- 	       android:layout_width="fill_parent"
- 	       android:layout_height="wrap_content"
- 	       android:onClick="showMethods"
- 	       android:text="Methods"/>  
- 	  	
- 	    <Button android:id="@+id/jcls_show_fields"
- 	       style="@android:style/TextAppearance.Medium"
- 	       android:layout_width="fill_parent"
- 	       android:layout_height="wrap_content"
- 	       android:onClick="showFields"
- 	       android:text="Fields"/>  
-	       
- 	    <Button android:id="@+id/jcls_show_classes"
- 	       style="@android:style/TextAppearance.Medium"
- 	       android:layout_width="fill_parent"
- 	       android:layout_height="wrap_content"
- 	       android:onClick="showClasses"
- 	       android:text="Classes"/>  
+         </LinearLayout>
+
+
+ 	 <LinearLayout
+ 	    android:orientation="horizontal"
+ 	    android:layout_width="fill_parent"
+ 	    android:layout_height="wrap_content">
+ 	   <ImageButton android:id="@+id/jcls_toggle_constructors"
+ 	      android:layout_width="wrap_content"
+ 	      android:layout_height="wrap_content"
+ 	      android:adjustViewBounds="true" 
+ 	      android:scaleType="fitCenter"
+ 	      android:src="@drawable/triangle"
+ 	      android:onClick="toggleConstructors" />
+           <TextView
+ 	      style="@android:style/TextAppearance.Medium"
+ 	      android:layout_width="wrap_content"
+ 	      android:layout_height="wrap_content"
+ 	      android:layout_gravity="center"
+ 	      android:text="Constructors Implemented"/> 
+ 	 </LinearLayout>
+         
+  	 <LinearLayout android:id="@+id/jcls_constructors_layout"
+  	    android:orientation="vertical"
+  	    android:visibility="gone"
+  	    android:layout_width="fill_parent"
+  	    android:layout_height="wrap_content" >
+           <ListView android:id="@+id/jcls_constructors"
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content" />
+         </LinearLayout>
+
+ 	 <LinearLayout
+ 	    android:orientation="horizontal"
+ 	    android:layout_width="fill_parent"
+ 	    android:layout_height="wrap_content">
+ 	   <ImageButton android:id="@+id/jcls_toggle_methods"
+ 	      android:layout_width="wrap_content"
+ 	      android:layout_height="wrap_content"
+ 	      android:adjustViewBounds="true" 
+ 	      android:scaleType="fitCenter"
+ 	      android:src="@drawable/triangle"
+ 	      android:onClick="toggleMethods" />
+           <TextView
+ 	      style="@android:style/TextAppearance.Medium"
+ 	      android:layout_width="wrap_content"
+ 	      android:layout_height="wrap_content"
+ 	      android:layout_gravity="center"
+ 	      android:text="Methods"/> 
+ 	 </LinearLayout>
+         
+  	 <LinearLayout android:id="@+id/jcls_methods_layout"
+  	    android:orientation="vertical"
+  	    android:visibility="gone"
+  	    android:layout_width="fill_parent"
+  	    android:layout_height="wrap_content" >
+           <ListView android:id="@+id/jcls_methods"
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content" />
+         </LinearLayout>
+
+ 	 <LinearLayout
+ 	    android:orientation="horizontal"
+ 	    android:layout_width="fill_parent"
+ 	    android:layout_height="wrap_content">
+ 	   <ImageButton android:id="@+id/jcls_toggle_fields"
+ 	      android:layout_width="wrap_content"
+ 	      android:layout_height="wrap_content"
+ 	      android:adjustViewBounds="true" 
+ 	      android:scaleType="fitCenter"
+ 	      android:src="@drawable/triangle"
+ 	      android:onClick="toggleFields" />
+           <TextView
+ 	      style="@android:style/TextAppearance.Medium"
+ 	      android:layout_width="wrap_content"
+ 	      android:layout_height="wrap_content"
+ 	      android:layout_gravity="center"
+ 	      android:text="Fields"/> 
+ 	 </LinearLayout>
+         
+  	 <LinearLayout android:id="@+id/jcls_fields_layout"
+  	    android:orientation="vertical"
+  	    android:visibility="gone"
+  	    android:layout_width="fill_parent"
+  	    android:layout_height="wrap_content" >
+           <ListView android:id="@+id/jcls_fields"
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content" />
+         </LinearLayout>
+
+
+ 	 <LinearLayout
+ 	    android:orientation="horizontal"
+ 	    android:layout_width="fill_parent"
+ 	    android:layout_height="wrap_content">
+ 	   <ImageButton android:id="@+id/jcls_toggle_classes"
+ 	      android:layout_width="wrap_content"
+ 	      android:layout_height="wrap_content"
+ 	      android:adjustViewBounds="true" 
+ 	      android:scaleType="fitCenter"
+ 	      android:src="@drawable/triangle"
+ 	      android:onClick="toggleClasses" />
+           <TextView
+ 	      style="@android:style/TextAppearance.Medium"
+ 	      android:layout_width="wrap_content"
+ 	      android:layout_height="wrap_content"
+ 	      android:layout_gravity="center"
+                                           android:text="Classes"/>
+ 	 </LinearLayout>
+         
+  	 <LinearLayout android:id="@+id/jcls_classes_layout"
+  	    android:orientation="vertical"
+  	    android:visibility="gone"
+  	    android:layout_width="fill_parent"
+  	    android:layout_height="wrap_content" >
+           <ListView android:id="@+id/jcls_classes"
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content" />
+         </LinearLayout>
       </LinearLayout>
     </RelativeLayout>
   </ScrollView>
