@@ -63,30 +63,18 @@ public class JavaClassActivity extends Activity {
       default: Log.e(TAG, "Unknown group position " + groupPosition); return 0;
       }
     }
-    public TextView getGenericView() {
-      // Layout parameters for the ExpandableListView
-      AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 64);
-
-      TextView textView = new TextView(JavaClassActivity.this);
-      textView.setLayoutParams(lp);
-      // Center the text vertically
-      textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-      // Set the text starting position
-      textView.setPadding(36, 0, 0, 0);
-      return textView;
-    }
     @Override
     public View getChildView(int groupPosition, int childPosition,
                              boolean isLastChild, View convertView,
                              ViewGroup parent) {
-      TextView textView = getGenericView();
+      TextView textView = (TextView)TextView.inflate(JavaClassActivity.this, R.layout.text_list_item, null);  
       textView.setText(getChild(groupPosition, childPosition).toString());
       return textView;
     }
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-      TextView textView = getGenericView();
+      TextView textView = (TextView) TextView.inflate(JavaClassActivity.this, R.layout.text_list_group, null);  
       textView.setText(getGroup(groupPosition).toString());
       return textView;
     }

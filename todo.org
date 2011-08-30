@@ -1,10 +1,24 @@
 * TODO Plumb in include inherited tickbox
+  Make this a set of 4 options in a preferences screen
+  Ideally, use color to indicate which fields/methods etc are inherited
 * TODO Cope with array types; include getComponentType()/isArray()
-* TODO Mark interfaces; include isInterface()
+* DONE Mark interfaces; include isInterface()
+  CLOSED: [2011-08-30 Tue 19:54]
 * TODO Use markers for modifiers in Class display
   Borrow from Eclipse: private/final/static etc
 * TODO Cope with inner classes; include getDeclaringClass()
 * TODO Sort out layout encompassing ListViews
+** DONE Shift to ExpandableListView
+   CLOSED: [2011-08-30 Tue 19:56]
+** TODO Get layout height right
+** DONE Indent groups to not overlap grouping indicator
+   CLOSED: [2011-08-30 Tue 21:17]
+** DONE Make children blue
+   CLOSED: [2011-08-30 Tue 21:17]
+** TODO Make part of field names blue
+** DONE Retire triangle PNGs
+   CLOSED: [2011-08-30 Tue 21:16]
+** TODO Scroll to top on open activity
 * TODO Make all clickable text visually consistent
   No buttons, everything blue
 * TODO Cope with class names with $ in them
