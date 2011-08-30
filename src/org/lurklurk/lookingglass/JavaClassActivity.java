@@ -7,28 +7,104 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class JavaClassActivity extends Activity {
+  public class ClassListAdapter extends BaseExpandableListAdapter {
+    // Array index constants
+    public static final int INTERFACES = 0;
+    public static final int CONSTRUCTORS = 1;
+    public static final int METHODS = 2;
+    public static final int FIELDS = 3;
+    public static final int CLASSES = 4;
+    
+    private String[] mGroups = { "implements...", "Constructors", "Methods", "Fields", "Classes" };
+    public String[] mInterfaceNames;
+    public String[] mConstructorNames;
+    public String[] mMethodNames;
+    public String[] mFieldNames;
+    public String[] mClassNames;
+    
+    @Override public Object getGroup(int groupPosition) { return mGroups[groupPosition]; }
+    @Override public int getGroupCount() { return mGroups.length; }
+    @Override public long getGroupId(int groupPosition) { return groupPosition; } 
+    
+    @Override public Object getChild(int groupPosition, int childPosition) {
+      switch (groupPosition) {
+      case INTERFACES: return mInterfaceNames[childPosition];
+      case CONSTRUCTORS: return mConstructorNames[childPosition];
+      case METHODS: return mMethodNames[childPosition];
+      case FIELDS: return mFieldNames[childPosition]; 
+      case CLASSES: return mClassNames[childPosition]; 
+      default: Log.e(TAG, "Unknown group position " + groupPosition); return "Error!";
+      }
+    }
+    @Override public long getChildId(int groupPosition, int childPosition) { return childPosition; }
+
+    @Override public int getChildrenCount(int groupPosition) {
+      switch (groupPosition) {
+      case INTERFACES: return mInterfaceNames.length;
+      case CONSTRUCTORS: return mConstructorNames.length;
+      case METHODS: return mMethodNames.length;
+      case FIELDS: return mFieldNames.length; 
+      case CLASSES: return mClassNames.length; 
+      default: Log.e(TAG, "Unknown group position " + groupPosition); return 0;
+      }
+    }
+    public TextView getGenericView() {
+      // Layout parameters for the ExpandableListView
+      AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 64);
+
+      TextView textView = new TextView(JavaClassActivity.this);
+      textView.setLayoutParams(lp);
+      // Center the text vertically
+      textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+      // Set the text starting position
+      textView.setPadding(36, 0, 0, 0);
+      return textView;
+    }
+    @Override
+    public View getChildView(int groupPosition, int childPosition,
+                             boolean isLastChild, View convertView,
+                             ViewGroup parent) {
+      TextView textView = getGenericView();
+      textView.setText(getChild(groupPosition, childPosition).toString());
+      return textView;
+    }
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded,
+                             View convertView, ViewGroup parent) {
+      TextView textView = getGenericView();
+      textView.setText(getGroup(groupPosition).toString());
+      return textView;
+    }
+    @Override public boolean hasStableIds() { return false; }
+    @Override public boolean isChildSelectable(int groupPosition, int childPosition) { return true; }
+  }
+  
   private static final String TAG = "JavaClassActivity";
 
   private String mClassName;
   private Class<?> mClass;
   private String mSuperClassName;
-  private boolean mInterfacesVisible = false;
-  private boolean mConstructorsVisible = false;
+  private ExpandableListView mResultsList;
+  private ClassListAdapter mAdapter = new ClassListAdapter();
+  
   private boolean mIncInheritedConstructors = false;
-  private boolean mMethodsVisible = false;
   private boolean mIncInheritedMethods = false;
-  private boolean mFieldsVisible = false;
   private boolean mIncInheritedFields = false;
-  private boolean mClassesVisible = false;
   private boolean mIncInheritedClasses = false;
   
   /** Called when the activity is first created. */
@@ -36,14 +112,9 @@ public class JavaClassActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     Log.i(TAG, "onCreate");
     super.onCreate(savedInstanceState);
-
-
     Intent intent = getIntent();
     mClassName = intent.getStringExtra("jclass_name");  
-    fillOutResults();
-  }
-  
-  private void fillOutResults() {
+
     if (mClassName == null) {
       Log.e(TAG, "No package name");
       mClassName = "unknown";
@@ -59,25 +130,30 @@ public class JavaClassActivity extends Activity {
       Log.i(TAG, "Failed to find class info for " + mClassName);
       setContentView(R.layout.jclass_error);
       TextView nameView = (TextView) findViewById(R.id.jcls_name);
-      nameView.setText(mClassName);     
+      nameView.setText(mClassName);
+      mResultsList = null;
     } else {
       Log.i(TAG, "Got class info for " + mClassName);
       setContentView(R.layout.jclass);
       TextView nameView = (TextView) findViewById(R.id.jcls_name);
       nameView.setText(mClassName);
-    
+      mResultsList = (ExpandableListView)findViewById(R.id.jcls_results_list);
+      
+      // First the elements that are set directly
       fillModifiers();
       fillSuperClass();
       //fillDeclaringClass();
       //fillComponentType();
+      
+      // Now the elements that form part of the ExpandableListView
       fillInterfaces();
       fillConstructors();
       fillMethods();
       fillFields();
-      fillClasses();
+      fillClasses();      
+      setUpListView();
     }
   }
-
   
   private String getModifierString(int modifiers) {
     String modDesc = "";
@@ -126,28 +202,11 @@ public class JavaClassActivity extends Activity {
 
   private void fillInterfaces() {
     Class<?>[] interfaceList = mClass.getInterfaces();     
-    final String[] names = new String[interfaceList.length];
+    mAdapter.mInterfaceNames = new String[interfaceList.length];
     for (int ii=0; ii<interfaceList.length; ii++) {
-      names[ii] = interfaceList[ii].getName();
-      Log.d(TAG, "found interface name: " + names[ii]);
-    }
-    ListView listView = (ListView) findViewById(R.id.jcls_interfaces);
-    ArrayAdapter<String> aa = new ArrayAdapter<String>(this, R.layout.text_list_item, names);
-    listView.setAdapter(aa);
-    listView.setOnItemClickListener(new OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
-        intent.putExtra("jclass_name", names[position]);
-        Log.i(TAG, "start JavaClassActivity for " + names[position] + " = interfaceNames[" + position + "]");
-        startActivity(intent);
-      }
-    });         
-  }
-  public void toggleInterfaces(View view) {
-    mInterfacesVisible = !mInterfacesVisible;
-    Log.i(TAG, "Toggle display of " + mClassName + " interfaces to be visible=" + mInterfacesVisible);
-    syncListLayoutDisplay("interfaces", mInterfacesVisible, R.id.jcls_toggle_interfaces, R.id.jcls_interfaces_layout);
+      mAdapter.mInterfaceNames[ii] = interfaceList[ii].getName();
+      Log.d(TAG, "found interface name: " + mAdapter.mInterfaceNames[ii]);
+    }        
   }
   
   private void fillConstructors() {
@@ -157,30 +216,11 @@ public class JavaClassActivity extends Activity {
     } else {
       constructorList = mClass.getDeclaredConstructors();
     }
-    final String[] names = new String[constructorList.length];
-    for (int ii=0; ii<names.length; ii++) {
-      names[ii] = constructorList[ii].getName();
-      Log.d(TAG, "found constructor name: " + names[ii]);
+    mAdapter.mConstructorNames = new String[constructorList.length];
+    for (int ii=0; ii<constructorList.length; ii++) {
+      mAdapter.mConstructorNames[ii] = constructorList[ii].getName();
+      Log.d(TAG, "found constructor name: " + mAdapter.mConstructorNames[ii]);
     }
-    ListView listView = (ListView) findViewById(R.id.jcls_constructors);
-    ArrayAdapter<String> aa = new ArrayAdapter<String>(this, R.layout.text_list_item, names);
-    listView.setAdapter(aa);
-    listView.setOnItemClickListener(new OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        /*
-        Intent intent = new Intent(JavaClassActivity.this, JavaMethodActivity.class);
-        intent.putExtra("jclass_name", interfaceNames[position]);
-        Log.i(TAG, "start JavaClassActivity for " + interfaceNames[position] + " = interfaceNames[" + position + "]");
-        startActivity(intent);
-        */
-      }
-    });          
-  }
-  public void toggleConstructors(View view) {
-    mConstructorsVisible = !mConstructorsVisible;
-    Log.i(TAG, "Toggle display of " + mClassName + " constructors to be visible=" + mConstructorsVisible);
-    syncListLayoutDisplay("constructors", mConstructorsVisible, R.id.jcls_toggle_constructors, R.id.jcls_constructors_layout);
   }
   
   private void fillMethods() {
@@ -190,30 +230,11 @@ public class JavaClassActivity extends Activity {
     } else {
       methodList = mClass.getDeclaredMethods();           
     }
-    final String[] names = new String[methodList.length];
-    for (int ii=0; ii<names.length; ii++) {
-      names[ii] = methodList[ii].getName();
-      Log.d(TAG, "found method name: " + names[ii]);
+    mAdapter.mMethodNames = new String[methodList.length];
+    for (int ii=0; ii<methodList.length; ii++) {
+      mAdapter.mMethodNames[ii] = methodList[ii].getName();
+      Log.d(TAG, "found method name: " + mAdapter.mMethodNames[ii]);
     }
-    ListView listView = (ListView) findViewById(R.id.jcls_methods);
-    ArrayAdapter<String> aa = new ArrayAdapter<String>(this, R.layout.text_list_item, names);
-    listView.setAdapter(aa);
-    listView.setOnItemClickListener(new OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        /*
-        Intent intent = new Intent(JavaClassActivity.this, JavaMethodActivity.class);
-        intent.putExtra("jclass_name", interfaceNames[position]);
-        Log.i(TAG, "start JavaClassActivity for " + interfaceNames[position] + " = interfaceNames[" + position + "]");
-        startActivity(intent);
-        */
-      }
-    });          
-  }
-  public void toggleMethods(View view) {
-    mMethodsVisible = !mMethodsVisible;
-    Log.i(TAG, "Toggle display of " + mClassName + " methods to be visible=" + mMethodsVisible);
-    syncListLayoutDisplay("methods", mMethodsVisible, R.id.jcls_toggle_methods, R.id.jcls_methods_layout);
   }
   
   private void fillFields() {
@@ -223,34 +244,14 @@ public class JavaClassActivity extends Activity {
     } else {
       fieldList = mClass.getDeclaredFields();
     }
-    final String[] names = new String[fieldList.length];
-    for (int ii=0; ii<names.length; ii++) {
+    mAdapter.mFieldNames = new String[fieldList.length];
+    for (int ii=0; ii<fieldList.length; ii++) {
       String fieldName = fieldList[ii].getName();
       Class<?> fieldType = fieldList[ii].getType();
-      names[ii] = fieldType.getName() + " " + fieldName;
-      Log.d(TAG, "found field name: " + names[ii]);
-    }
-    ListView listView = (ListView) findViewById(R.id.jcls_fields);
-    ArrayAdapter<String> aa = new ArrayAdapter<String>(this, R.layout.text_list_item, names);
-    listView.setAdapter(aa);
-    listView.setOnItemClickListener(new OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
-        // Extract the class name from the field description
-        String[] components = names[position].split(" ");
-        intent.putExtra("jclass_name", components[0]);
-        Log.i(TAG, "start JavaClassActivity for " + names[position]);
-        startActivity(intent);
-      }
-    });          
+      mAdapter.mFieldNames[ii] = fieldType.getName() + " " + fieldName;
+      Log.d(TAG, "found field name: " + mAdapter.mFieldNames[ii]);
+    }        
   }
-  public void toggleFields(View view) {
-    mFieldsVisible = !mFieldsVisible;
-    Log.i(TAG, "Toggle display of " + mClassName + " fields to be visible=" + mFieldsVisible);
-    syncListLayoutDisplay("fields", mFieldsVisible, R.id.jcls_toggle_fields, R.id.jcls_fields_layout);
-  }
-  
   
   private void fillClasses() {
     Class<?>[] classList;
@@ -259,41 +260,61 @@ public class JavaClassActivity extends Activity {
     } else {
       classList = mClass.getDeclaredClasses();   
     }
-    final String[] names = new String[classList.length];
-    for (int ii=0; ii<names.length; ii++) {
-      names[ii] = classList[ii].getName();
-      Log.d(TAG, "found class name: " + names[ii]);
+    mAdapter.mClassNames = new String[classList.length];
+    for (int ii=0; ii<classList.length; ii++) {
+      mAdapter.mClassNames[ii] = classList[ii].getName();
+      Log.d(TAG, "found class name: " + mAdapter.mClassNames[ii]);
     }
-    ListView listView = (ListView) findViewById(R.id.jcls_classes);
-    ArrayAdapter<String> aa = new ArrayAdapter<String>(this, R.layout.text_list_item, names);
-    listView.setAdapter(aa);
-    listView.setOnItemClickListener(new OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {       
-        Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
-        intent.putExtra("jclass_name", names[position]);
-        Log.i(TAG, "start JavaClassActivity for " + names[position] + " = names[" + position + "]");
-        startActivity(intent);
-      }
-    });          
-  }
-  public void toggleClasses(View view) {
-    mClassesVisible = !mClassesVisible;
-    Log.i(TAG, "Toggle display of " + mClassName + " classes to be visible=" + mClassesVisible);
-    syncListLayoutDisplay("classes", mClassesVisible, R.id.jcls_toggle_classes, R.id.jcls_classes_layout);
   }
   
-  private void syncListLayoutDisplay(String name, boolean visible, int buttonId, int layoutId) {
-    Log.d(TAG, "Make " + name + " display visible=" + visible);
-    ImageButton button = (ImageButton) findViewById(buttonId);
-    View listLayout =  findViewById(layoutId);
-    if (visible) {
-      button.setImageResource(R.drawable.triangle_down);
-      listLayout.setVisibility(View.VISIBLE);
-    } else {
-      button.setImageResource(R.drawable.triangle_right);
-      listLayout.setVisibility(View.GONE);      
-    }    
+
+  private void setUpListView() {
+    if (mResultsList == null) {
+      Log.e(TAG, "No results list to fill out!");
+      return;
+    }
+    mResultsList.setAdapter(mAdapter);
+    mResultsList.setOnChildClickListener(new OnChildClickListener() {
+      @Override
+      public boolean onChildClick(ExpandableListView parent, View v,
+                                  int groupPosition, int childPosition, long id) {
+        switch (groupPosition) {
+        case ClassListAdapter.INTERFACES: {  
+          Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
+          intent.putExtra("jclass_name", mAdapter.mInterfaceNames[childPosition]);
+          Log.i(TAG, "start JavaClassActivity for " + mAdapter.mInterfaceNames[childPosition] );
+          startActivity(intent);
+          return true;
+        }
+        case ClassListAdapter.CONSTRUCTORS: {
+          // TODO fill in launch of constructor display
+          return true;
+        }
+        case ClassListAdapter.METHODS: {
+          return true;
+        }
+        case ClassListAdapter.FIELDS: {
+          Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
+          // Extract the class name from the field description
+          String[] components = mAdapter.mFieldNames[childPosition].split(" ");
+          intent.putExtra("jclass_name", components[0]);
+          Log.i(TAG, "start JavaClassActivity for " + mAdapter.mFieldNames[childPosition]);
+          startActivity(intent);
+          return true; 
+        }
+        case ClassListAdapter.CLASSES: {
+          Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
+          intent.putExtra("jclass_name", mAdapter.mClassNames[childPosition]);
+          Log.i(TAG, "start JavaClassActivity for " + mAdapter.mClassNames[childPosition]);
+          startActivity(intent); 
+          return true;
+        }
+        default: {
+          Log.e(TAG, "Unknown group position " + groupPosition); 
+          return false;
+        }
+        }
+      }
+    });    
   }
- 
 }
