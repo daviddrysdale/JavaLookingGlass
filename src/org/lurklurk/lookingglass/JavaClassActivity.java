@@ -81,6 +81,7 @@ public class JavaClassActivity extends Activity {
   private Class<?> mClass;
   private String mSuperClassName;
   private String mContainingClassName;
+  private String mComponentClassName;
   private ExpandableListView mResultsList;
   private ClassListAdapter mAdapter = new ClassListAdapter();
   
@@ -113,6 +114,24 @@ public class JavaClassActivity extends Activity {
       setContentView(R.layout.jclass_error);
       TextView nameView = (TextView) findViewById(R.id.jcls_name);
       nameView.setText(mClassName);
+      ((TextView)findViewById(R.id.error_message)).setText("Class Not Found");
+      mResultsList = null;
+    } else if (mClass.isPrimitive()) {
+      // Primitive type
+      Log.i(TAG, "Primitive type " + mClassName);
+      setContentView(R.layout.jclass_error);
+      TextView nameView = (TextView) findViewById(R.id.jcls_name);
+      nameView.setText(mClassName);
+      ((TextView)findViewById(R.id.error_message)).setText("Primitive Type");      
+      mResultsList = null;
+    } else if (mClass.isArray()) {
+      // Array type
+      Log.i(TAG, "Array type " + mClassName);
+      Class<?> arrayClass = mClass.getComponentType();
+      mComponentClassName = arrayClass.getName();
+      setContentView(R.layout.jclass_array);
+      TextView nameView = (TextView) findViewById(R.id.jcls_name);
+      nameView.setText(mComponentClassName);
       mResultsList = null;
     } else {
       Log.i(TAG, "Got class info for " + mClassName);
@@ -200,6 +219,15 @@ public class JavaClassActivity extends Activity {
     Log.i(TAG, "start JavaClassActivity for " + mContainingClassName);
     startActivity(intent);
   }
+  
+  public void componentClassClicked(View view) {
+    Log.i(TAG, "User clicked on component class name: " + mComponentClassName);
+    if (mComponentClassName == null) return;
+    Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
+    intent.putExtra("jclass_name", mComponentClassName);
+    Log.i(TAG, "start JavaClassActivity for " + mComponentClassName);
+    startActivity(intent);
+  }
 
   private void fillInterfaces() {
     Class<?>[] interfaceList = mClass.getInterfaces();     
@@ -249,7 +277,12 @@ public class JavaClassActivity extends Activity {
     for (int ii=0; ii<fieldList.length; ii++) {
       String fieldName = fieldList[ii].getName();
       Class<?> fieldType = fieldList[ii].getType();
-      mAdapter.mFieldNames[ii] = fieldType.getName() + " " + fieldName;
+      String separator = " ";
+      if (fieldType.isArray()) {
+        fieldType = fieldType.getComponentType();
+        separator = "[] ";
+      } 
+      mAdapter.mFieldNames[ii] = fieldType.getName() + separator + fieldName;
       Log.d(TAG, "found field name: " + mAdapter.mFieldNames[ii]);
     }        
   }
@@ -299,6 +332,11 @@ public class JavaClassActivity extends Activity {
           Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
           // Extract the class name from the field description
           String[] components = mAdapter.mFieldNames[childPosition].split(" ");
+          int arrayOffset = components[0].indexOf("[]");
+          if (arrayOffset != -1) {
+            // Regenerate the mangled name indicating this is an array type
+            components[0] = "[L" +  components[0].substring(0, arrayOffset) + ";";
+          }
           intent.putExtra("jclass_name", components[0]);
           Log.i(TAG, "start JavaClassActivity for " + mAdapter.mFieldNames[childPosition]);
           startActivity(intent);

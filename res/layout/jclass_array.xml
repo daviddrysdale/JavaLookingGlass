@@ -11,23 +11,27 @@
      android:layout_height="0dp"
      android:layout_marginLeft="5dp"
      android:layout_weight="1.0">
-    <TextView android:id="@+id/jcls_name"
-       style="@style/mainName"
+    
+    <TextView android:id="@+id/array_text"
+       style="@android:style/TextAppearance.Medium"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
+       android:layout_marginTop="5dp"
+       android:layout_marginBottom="5dp"
+       android:text="Array of" />
+            
+    <TextView android:id="@+id/jcls_name"
+       style="@style/mainName"
+       android:layout_below="@id/array_text"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:textColor="@color/linkBlue"
        android:layout_marginTop="5dp"
        android:layout_marginBottom="5dp"
        android:layout_marginLeft="5dp"
-       android:text="class.name" />
-    
-    <TextView android:id="@+id/error_message"
-       android:layout_below="@id/jcls_name"
-       style="@android:style/TextAppearance.Medium"
-       android:textColor="#F00"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="5dp"
-       android:layout_marginBottom="5dp"
-       android:text="Class Not Found" />
+       android:text="class.name"
+       android:clickable="true"
+       android:onClick="componentClassClicked" />
+
   </RelativeLayout>
 </LinearLayout>

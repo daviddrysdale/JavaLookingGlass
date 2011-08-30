@@ -1,9 +1,12 @@
 * TODO Plumb in include inherited tickbox
   Make this a set of 4 options in a preferences screen
   Ideally, use color to indicate which fields/methods etc are inherited
-* TODO Cope with array types; include getComponentType()/isArray()
+* DONE Cope with array types; include getComponentType()/isArray()
+  CLOSED: [2011-08-30 Tue 21:51]
 * DONE Mark interfaces; include isInterface()
   CLOSED: [2011-08-30 Tue 19:54]
+* TODO Check with POD types; include isPrimitive()
+  byte/short/int/long/float/double/boolean/char
 * TODO Use markers for modifiers in Class display
   Borrow from Eclipse: private/final/static etc
 * DONE Cope with inner classes; include getDeclaringClass()
@@ -22,9 +25,9 @@
 ** TODO Scroll to top on open activity
 * TODO Make all clickable text visually consistent
   No buttons, everything blue
-* TODO Cope with class names with $ in them
-* TODO Check with POD types; include isPrimitive()
-  byte/short/int/long/float/double/boolean/char
+* DONTDO Cope with class names with $ in them
+  CLOSED: [2011-08-30 Tue 21:58]
+  These are inner classes; convert $ to dot?
 * TODO Link from getPackage() to package display
   although this doesn't seem to work in Android
   Find package name as initial substring of class name; make it blue and link to package
