@@ -6,7 +6,8 @@
   CLOSED: [2011-08-30 Tue 19:54]
 * TODO Use markers for modifiers in Class display
   Borrow from Eclipse: private/final/static etc
-* TODO Cope with inner classes; include getDeclaringClass()
+* DONE Cope with inner classes; include getDeclaringClass()
+  CLOSED: [2011-08-30 Tue 21:36]
 * TODO Sort out layout encompassing ListViews
 ** DONE Shift to ExpandableListView
    CLOSED: [2011-08-30 Tue 19:56]

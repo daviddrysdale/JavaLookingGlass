@@ -80,6 +80,7 @@ public class JavaClassActivity extends Activity {
   private String mClassName;
   private Class<?> mClass;
   private String mSuperClassName;
+  private String mContainingClassName;
   private ExpandableListView mResultsList;
   private ClassListAdapter mAdapter = new ClassListAdapter();
   
@@ -122,7 +123,7 @@ public class JavaClassActivity extends Activity {
       
       // First the elements that are set directly
       fillModifiers();
-      fillSuperClass();
+      fillOtherClasses();
       //fillDeclaringClass();
       //fillComponentType();
       
@@ -161,16 +162,27 @@ public class JavaClassActivity extends Activity {
     ((TextView)findViewById(R.id.jcls_cls_or_if)).setText(mClass.isInterface() ? "interface" : "class");
   }
   
-  private void fillSuperClass() {
+  private void fillOtherClasses() {
     Class<?> superCls = mClass.getSuperclass();
     if (superCls != null) {
       mSuperClassName = superCls.getName();
+      Log.i(TAG, "superclass of " + mClassName + " is " + mSuperClassName);
       ((TextView)findViewById(R.id.jcls_superclass)).setText(mSuperClassName);
     } else {
       mSuperClassName = null;
     }
-    
+    Class<?> containingClass = mClass.getDeclaringClass();
+    if (containingClass != null) {
+      mContainingClassName = containingClass.getName();
+      Log.i(TAG, "containing class for " + mClassName + " is " + mContainingClassName);
+      ((TextView)findViewById(R.id.jcls_containing_class)).setText(mContainingClassName);
+      findViewById(R.id.containing_class_layout).setVisibility(View.VISIBLE);     
+    } else {
+      mContainingClassName = null;
+      findViewById(R.id.containing_class_layout).setVisibility(View.GONE);     
+    }
   }
+  
   public void superClassClicked(View view) {
     Log.i(TAG, "User clicked on super class name: " + mSuperClassName);
     if (mSuperClassName == null) return;
@@ -180,6 +192,14 @@ public class JavaClassActivity extends Activity {
     startActivity(intent);
   }
   
+  public void containingClassClicked(View view) {
+    Log.i(TAG, "User clicked on containing class name: " + mContainingClassName);
+    if (mContainingClassName == null) return;
+    Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
+    intent.putExtra("jclass_name", mContainingClassName);
+    Log.i(TAG, "start JavaClassActivity for " + mContainingClassName);
+    startActivity(intent);
+  }
 
   private void fillInterfaces() {
     Class<?>[] interfaceList = mClass.getInterfaces();     
@@ -272,6 +292,7 @@ public class JavaClassActivity extends Activity {
           return true;
         }
         case ClassListAdapter.METHODS: {
+          // TODO: fill in launch of method display
           return true;
         }
         case ClassListAdapter.FIELDS: {

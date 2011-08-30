@@ -68,6 +68,27 @@
             android:onClick="superClassClicked"
             android:text="&lt;unknown&gt;" />
        </LinearLayout>
+       
+       <LinearLayout android:id="@+id/containing_class_layout" 
+          android:orientation="horizontal"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:visibility="gone"
+          android:layout_marginTop="3dp"
+          android:layout_marginBottom="3dp">
+         <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="contained in  " />
+         <TextView android:id="@+id/jcls_containing_class"
+            style="@style/clickableMedium"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" 
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="containingClassClicked"
+            android:text="&lt;unknown&gt;" />
+       </LinearLayout>
  
  	   <ExpandableListView android:id="@+id/jcls_results_list"
  	      android:layout_width="fill_parent"
