@@ -78,13 +78,28 @@ public class JavaClassActivity extends Activity {
     }
   }
 
+  
+  private String getModifierString(int modifiers) {
+    String modDesc = "";
+    if ((modifiers & Modifier.PUBLIC) != 0) modDesc += "public ";
+    if ((modifiers & Modifier.PRIVATE) != 0) modDesc += "private ";
+    if ((modifiers & Modifier.PROTECTED) != 0) modDesc += "protected ";
+    if ((modifiers & Modifier.STATIC) != 0) modDesc += "static ";
+    if ((modifiers & Modifier.FINAL) != 0) modDesc += "final ";
+    if ((modifiers & Modifier.SYNCHRONIZED) != 0) modDesc += "synchronized ";
+    if ((modifiers & Modifier.VOLATILE) != 0) modDesc += "volatile ";
+    if ((modifiers & Modifier.TRANSIENT) != 0) modDesc += "transient ";
+    if ((modifiers & Modifier.NATIVE) != 0) modDesc += "native ";
+    if ((modifiers & Modifier.INTERFACE) != 0) modDesc += "interface ";
+    if ((modifiers & Modifier.ABSTRACT) != 0) modDesc += "abstract ";
+    if ((modifiers & Modifier.STRICT) != 0) modDesc += "strict ";
+    return modDesc;
+  }
+  
   private void fillModifiers() {
     int modifiers = mClass.getModifiers();
-    String modDesc = "";
-    if ((modifiers & 0x0001) != 0) modDesc += "public ";
-    if ((modifiers & 0x0010) != 0) modDesc += "final ";
-    if ((modifiers & 0x0200) != 0) modDesc += "interface ";
-    if ((modifiers & 0x0400) != 0) modDesc += "abstract ";
+    // Strip out interface bit as we display that separately
+    String modDesc = getModifierString(modifiers & ~Modifier.INTERFACE);
     ((TextView)findViewById(R.id.jcls_modifiers)).setText(modDesc);
     ((TextView)findViewById(R.id.jcls_cls_or_if)).setText(mClass.isInterface() ? "interface" : "class");
   }
