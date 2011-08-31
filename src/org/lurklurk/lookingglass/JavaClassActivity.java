@@ -61,21 +61,26 @@ public class JavaClassActivity extends Activity {
                              boolean isLastChild, View convertView,
                              ViewGroup parent) {
       TextView textView = (TextView)TextView.inflate(JavaClassActivity.this, R.layout.text_list_item, null);
+      String modifierInfo = null;
       String childInfo = null;
       switch (groupPosition) {
       case INTERFACES: {
+        modifierInfo = getModifierString(mInterfaces[childPosition].getModifiers());
         childInfo = mInterfaces[childPosition].getName();
         break;
       }
       case CONSTRUCTORS: {
+        modifierInfo = getModifierString(mConstructors[childPosition].getModifiers());
         childInfo = mConstructors[childPosition].getName();
         break;
       }
       case METHODS: {
+        modifierInfo = getModifierString(mMethods[childPosition].getModifiers());
         childInfo = mMethods[childPosition].getName();
         break;
       }
       case FIELDS: {
+        modifierInfo = getModifierString(mFields[childPosition].getModifiers());
         String fieldName = mFields[childPosition].getName();
         Class<?> fieldType = mFields[childPosition].getType();
         String separator = " ";
@@ -87,16 +92,18 @@ public class JavaClassActivity extends Activity {
         break;
       }
       case CLASSES: {
+        modifierInfo = getModifierString(mClasses[childPosition].getModifiers());
         childInfo = mClasses[childPosition].getName(); 
         break;
       }
       default: {
         Log.e(TAG, "Unknown group position " + groupPosition); 
+        modifierInfo = "";
         childInfo = "Error!";
         break;
       }
       }
-      textView.setText(childInfo);
+      textView.setText(modifierInfo + childInfo);
       return textView;
     }
     @Override
@@ -191,7 +198,7 @@ public class JavaClassActivity extends Activity {
     }
   }
   
-  private String getModifierString(int modifiers) {
+  public static String getModifierString(int modifiers) {
     String modDesc = "";
     if ((modifiers & Modifier.PUBLIC) != 0) modDesc += "public ";
     if ((modifiers & Modifier.PRIVATE) != 0) modDesc += "private ";
