@@ -24,11 +24,11 @@ public class JavaClassActivity extends Activity {
     public static final int CLASSES = 4;
     
     private String[] mGroups = { "implements...", "Constructors", "Methods", "Fields", "Classes" };
-    public String[] mInterfaceNames;
-    public String[] mConstructorNames;
-    public String[] mMethodNames;
-    public String[] mFieldNames;
-    public String[] mClassNames;
+    public Class<?>[] mInterfaces;
+    public Constructor<?>[] mConstructors;
+    public Method[] mMethods;
+    public Field[] mFields;
+    public Class<?>[] mClasses;
     
     @Override public Object getGroup(int groupPosition) { return mGroups[groupPosition]; }
     @Override public int getGroupCount() { return mGroups.length; }
@@ -36,11 +36,11 @@ public class JavaClassActivity extends Activity {
     
     @Override public Object getChild(int groupPosition, int childPosition) {
       switch (groupPosition) {
-      case INTERFACES: return mInterfaceNames[childPosition];
-      case CONSTRUCTORS: return mConstructorNames[childPosition];
-      case METHODS: return mMethodNames[childPosition];
-      case FIELDS: return mFieldNames[childPosition]; 
-      case CLASSES: return mClassNames[childPosition]; 
+      case INTERFACES: return mInterfaces[childPosition];
+      case CONSTRUCTORS: return mConstructors[childPosition];
+      case METHODS: return mMethods[childPosition];
+      case FIELDS: return mFields[childPosition]; 
+      case CLASSES: return mClasses[childPosition]; 
       default: Log.e(TAG, "Unknown group position " + groupPosition); return "Error!";
       }
     }
@@ -48,11 +48,11 @@ public class JavaClassActivity extends Activity {
 
     @Override public int getChildrenCount(int groupPosition) {
       switch (groupPosition) {
-      case INTERFACES: return mInterfaceNames.length;
-      case CONSTRUCTORS: return mConstructorNames.length;
-      case METHODS: return mMethodNames.length;
-      case FIELDS: return mFieldNames.length; 
-      case CLASSES: return mClassNames.length; 
+      case INTERFACES: return mInterfaces.length;
+      case CONSTRUCTORS: return mConstructors.length;
+      case METHODS: return mMethods.length;
+      case FIELDS: return mFields.length; 
+      case CLASSES: return mClasses.length; 
       default: Log.e(TAG, "Unknown group position " + groupPosition); return 0;
       }
     }
@@ -60,8 +60,43 @@ public class JavaClassActivity extends Activity {
     public View getChildView(int groupPosition, int childPosition,
                              boolean isLastChild, View convertView,
                              ViewGroup parent) {
-      TextView textView = (TextView)TextView.inflate(JavaClassActivity.this, R.layout.text_list_item, null);  
-      textView.setText(getChild(groupPosition, childPosition).toString());
+      TextView textView = (TextView)TextView.inflate(JavaClassActivity.this, R.layout.text_list_item, null);
+      String childInfo = null;
+      switch (groupPosition) {
+      case INTERFACES: {
+        childInfo = mInterfaces[childPosition].getName();
+        break;
+      }
+      case CONSTRUCTORS: {
+        childInfo = mConstructors[childPosition].getName();
+        break;
+      }
+      case METHODS: {
+        childInfo = mMethods[childPosition].getName();
+        break;
+      }
+      case FIELDS: {
+        String fieldName = mFields[childPosition].getName();
+        Class<?> fieldType = mFields[childPosition].getType();
+        String separator = " ";
+        if (fieldType.isArray()) {
+          fieldType = fieldType.getComponentType();
+          separator = "[] ";
+        } 
+        childInfo = fieldType.getName() + separator + fieldName;
+        break;
+      }
+      case CLASSES: {
+        childInfo = mClasses[childPosition].getName(); 
+        break;
+      }
+      default: {
+        Log.e(TAG, "Unknown group position " + groupPosition); 
+        childInfo = "Error!";
+        break;
+      }
+      }
+      textView.setText(childInfo);
       return textView;
     }
     @Override
@@ -230,74 +265,38 @@ public class JavaClassActivity extends Activity {
   }
 
   private void fillInterfaces() {
-    Class<?>[] interfaceList = mClass.getInterfaces();     
-    mAdapter.mInterfaceNames = new String[interfaceList.length];
-    for (int ii=0; ii<interfaceList.length; ii++) {
-      mAdapter.mInterfaceNames[ii] = interfaceList[ii].getName();
-      Log.d(TAG, "found interface name: " + mAdapter.mInterfaceNames[ii]);
-    }        
+    mAdapter.mInterfaces = mClass.getInterfaces();        
   }
   
   private void fillConstructors() {
-    Constructor<?>[] constructorList;
     if (mIncInheritedConstructors) {
-      constructorList = mClass.getConstructors();     
+      mAdapter.mConstructors = mClass.getConstructors();     
     } else {
-      constructorList = mClass.getDeclaredConstructors();
-    }
-    mAdapter.mConstructorNames = new String[constructorList.length];
-    for (int ii=0; ii<constructorList.length; ii++) {
-      mAdapter.mConstructorNames[ii] = constructorList[ii].getName();
-      Log.d(TAG, "found constructor name: " + mAdapter.mConstructorNames[ii]);
+      mAdapter.mConstructors = mClass.getDeclaredConstructors();
     }
   }
   
   private void fillMethods() {
-    Method[] methodList;
     if (mIncInheritedMethods) {
-      methodList = mClass.getMethods();     
+      mAdapter.mMethods = mClass.getMethods();     
     } else {
-      methodList = mClass.getDeclaredMethods();           
-    }
-    mAdapter.mMethodNames = new String[methodList.length];
-    for (int ii=0; ii<methodList.length; ii++) {
-      mAdapter.mMethodNames[ii] = methodList[ii].getName();
-      Log.d(TAG, "found method name: " + mAdapter.mMethodNames[ii]);
+      mAdapter.mMethods = mClass.getDeclaredMethods();           
     }
   }
   
   private void fillFields() {
-    Field[] fieldList;
     if (mIncInheritedFields) {
-      fieldList = mClass.getFields();     
+      mAdapter.mFields = mClass.getFields();     
     } else {
-      fieldList = mClass.getDeclaredFields();
+      mAdapter.mFields = mClass.getDeclaredFields();
     }
-    mAdapter.mFieldNames = new String[fieldList.length];
-    for (int ii=0; ii<fieldList.length; ii++) {
-      String fieldName = fieldList[ii].getName();
-      Class<?> fieldType = fieldList[ii].getType();
-      String separator = " ";
-      if (fieldType.isArray()) {
-        fieldType = fieldType.getComponentType();
-        separator = "[] ";
-      } 
-      mAdapter.mFieldNames[ii] = fieldType.getName() + separator + fieldName;
-      Log.d(TAG, "found field name: " + mAdapter.mFieldNames[ii]);
-    }        
   }
   
   private void fillClasses() {
-    Class<?>[] classList;
     if (mIncInheritedClasses) {
-      classList = mClass.getClasses();     
+      mAdapter.mClasses = mClass.getClasses();     
     } else {
-      classList = mClass.getDeclaredClasses();   
-    }
-    mAdapter.mClassNames = new String[classList.length];
-    for (int ii=0; ii<classList.length; ii++) {
-      mAdapter.mClassNames[ii] = classList[ii].getName();
-      Log.d(TAG, "found class name: " + mAdapter.mClassNames[ii]);
+      mAdapter.mClasses = mClass.getDeclaredClasses();   
     }
   }
   
@@ -315,8 +314,8 @@ public class JavaClassActivity extends Activity {
         switch (groupPosition) {
         case ClassListAdapter.INTERFACES: {  
           Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
-          intent.putExtra("jclass_name", mAdapter.mInterfaceNames[childPosition]);
-          Log.i(TAG, "start JavaClassActivity for " + mAdapter.mInterfaceNames[childPosition] );
+          intent.putExtra("jclass_name", mAdapter.mInterfaces[childPosition].getName());
+          Log.i(TAG, "start JavaClassActivity for " + intent.getStringExtra("jclass_name"));
           startActivity(intent);
           return true;
         }
@@ -330,22 +329,15 @@ public class JavaClassActivity extends Activity {
         }
         case ClassListAdapter.FIELDS: {
           Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
-          // Extract the class name from the field description
-          String[] components = mAdapter.mFieldNames[childPosition].split(" ");
-          int arrayOffset = components[0].indexOf("[]");
-          if (arrayOffset != -1) {
-            // Regenerate the mangled name indicating this is an array type
-            components[0] = "[L" +  components[0].substring(0, arrayOffset) + ";";
-          }
-          intent.putExtra("jclass_name", components[0]);
-          Log.i(TAG, "start JavaClassActivity for " + mAdapter.mFieldNames[childPosition]);
+          intent.putExtra("jclass_name", mAdapter.mFields[childPosition].getType().getName());
+          Log.i(TAG, "start JavaClassActivity for " + intent.getStringExtra("jclass_name"));
           startActivity(intent);
           return true; 
         }
         case ClassListAdapter.CLASSES: {
           Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
-          intent.putExtra("jclass_name", mAdapter.mClassNames[childPosition]);
-          Log.i(TAG, "start JavaClassActivity for " + mAdapter.mClassNames[childPosition]);
+          intent.putExtra("jclass_name", mAdapter.mClasses[childPosition].getName());
+          Log.i(TAG, "start JavaClassActivity for " + intent.getStringExtra("jclass_name"));
           startActivity(intent); 
           return true;
         }
