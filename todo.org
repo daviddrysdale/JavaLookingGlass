@@ -7,8 +7,8 @@
   CLOSED: [2011-08-30 Tue 19:54]
 * TODO Check with POD types; include isPrimitive()
   byte/short/int/long/float/double/boolean/char
-* TODO Use markers for modifiers in Class display
-  Borrow from Eclipse: private/final/static etc
+* DONE Show modifiers in Class display
+  CLOSED: [2011-08-31 Wed 21:25]
 * DONE Cope with inner classes; include getDeclaringClass()
   CLOSED: [2011-08-30 Tue 21:36]
 * TODO Sort out layout encompassing ListViews
@@ -23,7 +23,8 @@
 ** DONE Retire triangle PNGs
    CLOSED: [2011-08-30 Tue 21:16]
 ** TODO Scroll to top on open activity
-* TODO Make all clickable text visually consistent
+* DONE Make all clickable text visually consistent
+  CLOSED: [2011-08-31 Wed 21:24]
   No buttons, everything blue
 * DONTDO Cope with class names with $ in them
   CLOSED: [2011-08-30 Tue 21:58]
@@ -35,5 +36,7 @@
 * TODO Constructor display
 * DONE Retire pressed triangle PNG
   CLOSED: [2011-08-29 Mon 20:04]
-* TODO Changing orientation should remember which sections are expanded  
-* TODO Gray out non-applicable sections (and disable toggle)
+* DONE Changing orientation should remember which sections are expanded  
+  CLOSED: [2011-08-31 Wed 21:25]
+* DONTDO Gray out non-applicable sections (and disable toggle)
+  CLOSED: [2011-08-31 Wed 21:25]

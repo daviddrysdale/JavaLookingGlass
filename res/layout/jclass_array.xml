@@ -25,7 +25,7 @@
        android:layout_below="@id/array_text"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:textColor="@color/linkBlue"
+       android:textColor="@color/link"
        android:layout_marginTop="5dp"
        android:layout_marginBottom="5dp"
        android:layout_marginLeft="5dp"

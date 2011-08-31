@@ -5,7 +5,10 @@ import java.lang.reflect.*;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.TextView;
+import android.widget.TextView.BufferType;
 
 public class JavaClassActivity extends Activity {
   public class ClassListAdapter extends BaseExpandableListAdapter {
@@ -23,13 +27,20 @@ public class JavaClassActivity extends Activity {
     public static final int FIELDS = 3;
     public static final int CLASSES = 4;
     
+    ForegroundColorSpan mLinkColor;
+    ForegroundColorSpan mNameColor;
+    
     private String[] mGroups = { "implements...", "Constructors", "Methods", "Fields", "Classes" };
     public Class<?>[] mInterfaces;
     public Constructor<?>[] mConstructors;
     public Method[] mMethods;
     public Field[] mFields;
     public Class<?>[] mClasses;
-    
+    public ClassListAdapter(Resources resources) {
+      super();
+      mLinkColor = new ForegroundColorSpan(resources.getColor(R.color.link));
+      mNameColor = new ForegroundColorSpan(resources.getColor(R.color.name));     
+    }
     @Override public Object getGroup(int groupPosition) { return mGroups[groupPosition]; }
     @Override public int getGroupCount() { return mGroups.length; }
     @Override public long getGroupId(int groupPosition) { return groupPosition; } 
@@ -62,48 +73,63 @@ public class JavaClassActivity extends Activity {
                              ViewGroup parent) {
       TextView textView = (TextView)TextView.inflate(JavaClassActivity.this, R.layout.text_list_item, null);
       String modifierInfo = null;
-      String childInfo = null;
+      String linkInfo = null;
+      String nameInfo = "";
       switch (groupPosition) {
       case INTERFACES: {
         modifierInfo = getModifierString(mInterfaces[childPosition].getModifiers());
-        childInfo = mInterfaces[childPosition].getName();
+        linkInfo = mInterfaces[childPosition].getName();
         break;
       }
       case CONSTRUCTORS: {
         modifierInfo = getModifierString(mConstructors[childPosition].getModifiers());
-        childInfo = mConstructors[childPosition].getName();
+        linkInfo = mConstructors[childPosition].getName();
         break;
       }
       case METHODS: {
         modifierInfo = getModifierString(mMethods[childPosition].getModifiers());
-        childInfo = mMethods[childPosition].getName();
+        linkInfo = mMethods[childPosition].getName();
         break;
       }
       case FIELDS: {
         modifierInfo = getModifierString(mFields[childPosition].getModifiers());
-        String fieldName = mFields[childPosition].getName();
         Class<?> fieldType = mFields[childPosition].getType();
-        String separator = " ";
         if (fieldType.isArray()) {
           fieldType = fieldType.getComponentType();
-          separator = "[] ";
-        } 
-        childInfo = fieldType.getName() + separator + fieldName;
+          linkInfo = fieldType.getName() + "[]";
+        } else {
+          linkInfo = fieldType.getName();                  
+        }
+        nameInfo = " " + mFields[childPosition].getName();
         break;
       }
       case CLASSES: {
         modifierInfo = getModifierString(mClasses[childPosition].getModifiers());
-        childInfo = mClasses[childPosition].getName(); 
+        linkInfo = mClasses[childPosition].getName(); 
         break;
       }
       default: {
         Log.e(TAG, "Unknown group position " + groupPosition); 
         modifierInfo = "";
-        childInfo = "Error!";
+        linkInfo = "";
+        nameInfo = "Error!";
         break;
       }
       }
-      textView.setText(modifierInfo + childInfo);
+      SpannableString itemInfo = new SpannableString(modifierInfo + linkInfo + nameInfo);
+      if (linkInfo.length() > 0) {
+        itemInfo.setSpan(mLinkColor, 
+                         modifierInfo.length(), 
+                         modifierInfo.length() + linkInfo.length(), 
+                         0);
+      }
+      if (nameInfo.length() > 0) {
+        itemInfo.setSpan(mNameColor,
+                         modifierInfo.length() + linkInfo.length(),
+                         modifierInfo.length() + linkInfo.length() + nameInfo.length(),
+                         0);
+      }
+      textView.setText(itemInfo, BufferType.SPANNABLE);
       return textView;
     }
     @Override
@@ -125,7 +151,7 @@ public class JavaClassActivity extends Activity {
   private String mContainingClassName;
   private String mComponentClassName;
   private ExpandableListView mResultsList;
-  private ClassListAdapter mAdapter = new ClassListAdapter();
+  private ClassListAdapter mAdapter;
   
   private boolean mIncInheritedConstructors = false;
   private boolean mIncInheritedMethods = false;
@@ -136,6 +162,7 @@ public class JavaClassActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     Log.i(TAG, "onCreate");
+    mAdapter = new ClassListAdapter(getResources());
     super.onCreate(savedInstanceState);
     Intent intent = getIntent();
     mClassName = intent.getStringExtra("jclass_name");  
