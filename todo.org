@@ -5,7 +5,8 @@
   CLOSED: [2011-08-30 Tue 21:51]
 * DONE Mark interfaces; include isInterface()
   CLOSED: [2011-08-30 Tue 19:54]
-* TODO Check with POD types; include isPrimitive()
+* DONE Check with POD types; include isPrimitive()
+  CLOSED: [2011-09-01 Thu 08:17]
   byte/short/int/long/float/double/boolean/char
 * DONE Show modifiers in Class display
   CLOSED: [2011-08-31 Wed 21:25]

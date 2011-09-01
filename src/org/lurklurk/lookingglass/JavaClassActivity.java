@@ -175,7 +175,27 @@ public class JavaClassActivity extends Activity {
     {
       mClass = Class.forName(mClassName);
     } catch (ClassNotFoundException e) {
-      mClass = null;
+      // Lookup of primitive types by name fails, so watch for them as a special case
+      if (mClassName.equals("boolean")) {
+        mClass = boolean.class;
+      } else if (mClassName.equals("byte")) {
+        mClass = byte.class;
+      } else if (mClassName.equals("short")) {
+        mClass = short.class;
+      } else if (mClassName.equals("int")) {
+        mClass = int.class;
+      } else if (mClassName.equals("long")) {
+        mClass = long.class;
+      } else if (mClassName.equals("char")) {
+        mClass = char.class;
+      } else if (mClassName.equals("float")) {
+        mClass = float.class;
+      } else if (mClassName.equals("double")) {
+        mClass = double.class;
+      } else {
+        Log.e(TAG, "Could not find class " + mClassName + ", error " + e);
+        mClass = null;
+      }
     }
 
     if (mClass == null) {
