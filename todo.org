@@ -30,7 +30,8 @@
 * DONTDO Cope with class names with $ in them
   CLOSED: [2011-08-30 Tue 21:58]
   These are inner classes; convert $ to dot?
-* TODO Link from getPackage() to package display
+* DONE Link from getPackage() to package display
+  CLOSED: [2011-09-01 Thu 08:38]
   although this doesn't seem to work in Android
   Find package name as initial substring of class name; make it blue and link to package
 * TODO Method display

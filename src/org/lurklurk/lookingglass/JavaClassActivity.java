@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -36,10 +38,10 @@ public class JavaClassActivity extends Activity {
     public Method[] mMethods;
     public Field[] mFields;
     public Class<?>[] mClasses;
-    public ClassListAdapter(Resources resources) {
+    public ClassListAdapter(ForegroundColorSpan linkColor, ForegroundColorSpan nameColor) {
       super();
-      mLinkColor = new ForegroundColorSpan(resources.getColor(R.color.link));
-      mNameColor = new ForegroundColorSpan(resources.getColor(R.color.name));     
+      mLinkColor = linkColor;
+      mNameColor = nameColor;
     }
     @Override public Object getGroup(int groupPosition) { return mGroups[groupPosition]; }
     @Override public int getGroupCount() { return mGroups.length; }
@@ -152,6 +154,9 @@ public class JavaClassActivity extends Activity {
   private String mComponentClassName;
   private ExpandableListView mResultsList;
   private ClassListAdapter mAdapter;
+ 
+  ForegroundColorSpan mLinkColor;
+  ForegroundColorSpan mNameColor;
   
   private boolean mIncInheritedConstructors = false;
   private boolean mIncInheritedMethods = false;
@@ -162,7 +167,10 @@ public class JavaClassActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     Log.i(TAG, "onCreate");
-    mAdapter = new ClassListAdapter(getResources());
+    Resources resources = getResources();
+    mLinkColor = new ForegroundColorSpan(resources.getColor(R.color.link));
+    mNameColor = new ForegroundColorSpan(resources.getColor(R.color.name));  
+    mAdapter = new ClassListAdapter(mLinkColor, mNameColor);
     super.onCreate(savedInstanceState);
     Intent intent = getIntent();
     mClassName = intent.getStringExtra("jclass_name");  
@@ -225,17 +233,12 @@ public class JavaClassActivity extends Activity {
     } else {
       Log.i(TAG, "Got class info for " + mClassName);
       setContentView(R.layout.jclass);
-      TextView nameView = (TextView) findViewById(R.id.jcls_name);
-      nameView.setText(mClassName);
-      mResultsList = (ExpandableListView)findViewById(R.id.jcls_results_list);
       
       // First the elements that are set directly
-      fillModifiers();
-      fillOtherClasses();
-      //fillDeclaringClass();
-      //fillComponentType();
+      fillPrologue();
       
       // Now the elements that form part of the ExpandableListView
+      mResultsList = (ExpandableListView)findViewById(R.id.jcls_results_list);
       fillInterfaces();
       fillConstructors();
       fillMethods();
@@ -261,16 +264,39 @@ public class JavaClassActivity extends Activity {
     if ((modifiers & Modifier.STRICT) != 0) modDesc += "strict ";
     return modDesc;
   }
-  
-  private void fillModifiers() {
+    
+  private void fillPrologue() {
+    // Modifier display
     int modifiers = mClass.getModifiers();
     // Strip out interface bit as we display that separately
     String modDesc = getModifierString(modifiers & ~Modifier.INTERFACE);
     ((TextView)findViewById(R.id.jcls_modifiers)).setText(modDesc);
     ((TextView)findViewById(R.id.jcls_cls_or_if)).setText(mClass.isInterface() ? "interface" : "class");
-  }
-  
-  private void fillOtherClasses() {
+
+    // Class name display, including link to package
+    SpannableString nameString = new SpannableString(mClassName);
+    TextView nameView = (TextView) findViewById(R.id.jcls_name);
+    Package pkg = mClass.getPackage();
+    if (pkg != null) {
+      Log.i(TAG, "Class is in package " + pkg);
+      final String packageName = pkg.getName();
+      int pkgNameOffset = mClassName.indexOf(packageName);
+      if (pkgNameOffset != -1) {
+        nameString.setSpan(mLinkColor, pkgNameOffset, pkgNameOffset + packageName.length(), 0);
+        nameView.setClickable(true);
+        nameView.setOnClickListener(new OnClickListener() {
+          @Override public void onClick(View v) {
+            Intent intent = new Intent(JavaClassActivity.this, JavaPackageActivity.class);
+            intent.putExtra("jpackage_name", packageName);
+            Log.i(TAG, "start JavaPackageActivity for " + packageName);
+            startActivity(intent);
+          }          
+        });
+      }
+    }
+    nameView.setText(nameString, BufferType.SPANNABLE);
+    
+    // Superclass display
     Class<?> superCls = mClass.getSuperclass();
     if (superCls != null) {
       mSuperClassName = superCls.getName();
@@ -279,6 +305,8 @@ public class JavaClassActivity extends Activity {
     } else {
       mSuperClassName = null;
     }
+    
+    // Containing class display (for inner classes)
     Class<?> containingClass = mClass.getDeclaringClass();
     if (containingClass != null) {
       mContainingClassName = containingClass.getName();
