@@ -12,18 +12,22 @@
   CLOSED: [2011-08-31 Wed 21:25]
 * DONE Cope with inner classes; include getDeclaringClass()
   CLOSED: [2011-08-30 Tue 21:36]
-* TODO Sort out layout encompassing ListViews
+* DONE Sort out layout encompassing ListViews
+  CLOSED: [2011-09-02 Fri 08:37]
 ** DONE Shift to ExpandableListView
    CLOSED: [2011-08-30 Tue 19:56]
-** TODO Get layout height right
+** DONE Get layout height right
+   CLOSED: [2011-09-02 Fri 08:37]
 ** DONE Indent groups to not overlap grouping indicator
    CLOSED: [2011-08-30 Tue 21:17]
 ** DONE Make children blue
    CLOSED: [2011-08-30 Tue 21:17]
-** TODO Make part of field names blue
+** DONE Make part of field names blue
+   CLOSED: [2011-09-02 Fri 08:37]
 ** DONE Retire triangle PNGs
    CLOSED: [2011-08-30 Tue 21:16]
-** TODO Scroll to top on open activity
+** DONE Scroll to top on open activity
+   CLOSED: [2011-09-02 Fri 08:37]
 * DONE Make all clickable text visually consistent
   CLOSED: [2011-08-31 Wed 21:24]
   No buttons, everything blue

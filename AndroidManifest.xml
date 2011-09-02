@@ -26,7 +26,11 @@
         <activity android:name=".JavaClassActivity"
                   android:label="Java Class">
         </activity>
-        
+
+        <activity android:name=".JavaSpecialClassActivity"
+                  android:label="Java Class">
+        </activity>
+                
         <activity android:name=".JavaClassConstructorActivity"
                   android:label="Class Constructor" />
     </application>

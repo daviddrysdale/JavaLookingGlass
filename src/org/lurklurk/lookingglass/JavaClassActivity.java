@@ -3,24 +3,24 @@ package org.lurklurk.lookingglass;
 
 import java.lang.reflect.*;
 
-import android.app.Activity;
+import android.app.ExpandableListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.SpannableString;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-public class JavaClassActivity extends Activity {
+public class JavaClassActivity extends ExpandableListActivity {
   public class ClassListAdapter extends BaseExpandableListAdapter {
     // Array index constants
     public static final int INTERFACES = 0;
@@ -151,8 +151,7 @@ public class JavaClassActivity extends Activity {
   private Class<?> mClass;
   private String mSuperClassName;
   private String mContainingClassName;
-  private String mComponentClassName;
-  private ExpandableListView mResultsList;
+
   private ClassListAdapter mAdapter;
  
   ForegroundColorSpan mLinkColor;
@@ -163,7 +162,6 @@ public class JavaClassActivity extends Activity {
   private boolean mIncInheritedFields = false;
   private boolean mIncInheritedClasses = false;
   
-  /** Called when the activity is first created. */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     Log.i(TAG, "onCreate");
@@ -183,68 +181,45 @@ public class JavaClassActivity extends Activity {
     {
       mClass = Class.forName(mClassName);
     } catch (ClassNotFoundException e) {
-      // Lookup of primitive types by name fails, so watch for them as a special case
-      if (mClassName.equals("boolean")) {
-        mClass = boolean.class;
-      } else if (mClassName.equals("byte")) {
-        mClass = byte.class;
-      } else if (mClassName.equals("short")) {
-        mClass = short.class;
-      } else if (mClassName.equals("int")) {
-        mClass = int.class;
-      } else if (mClassName.equals("long")) {
-        mClass = long.class;
-      } else if (mClassName.equals("char")) {
-        mClass = char.class;
-      } else if (mClassName.equals("float")) {
-        mClass = float.class;
-      } else if (mClassName.equals("double")) {
-        mClass = double.class;
-      } else {
-        Log.e(TAG, "Could not find class " + mClassName + ", error " + e);
-        mClass = null;
-      }
+      Log.e(TAG, "Could not find class " + mClassName + ", error " + e);
+      mClass = null;
     }
 
-    if (mClass == null) {
-      Log.i(TAG, "Failed to find class info for " + mClassName);
-      setContentView(R.layout.jclass_error);
-      TextView nameView = (TextView) findViewById(R.id.jcls_name);
-      nameView.setText(mClassName);
-      ((TextView)findViewById(R.id.error_message)).setText("Class Not Found");
-      mResultsList = null;
-    } else if (mClass.isPrimitive()) {
-      // Primitive type
-      Log.i(TAG, "Primitive type " + mClassName);
-      setContentView(R.layout.jclass_error);
-      TextView nameView = (TextView) findViewById(R.id.jcls_name);
-      nameView.setText(mClassName);
-      ((TextView)findViewById(R.id.error_message)).setText("Primitive Type");      
-      mResultsList = null;
-    } else if (mClass.isArray()) {
-      // Array type
-      Log.i(TAG, "Array type " + mClassName);
-      Class<?> arrayClass = mClass.getComponentType();
-      mComponentClassName = arrayClass.getName();
-      setContentView(R.layout.jclass_array);
-      TextView nameView = (TextView) findViewById(R.id.jcls_name);
-      nameView.setText(mComponentClassName);
-      mResultsList = null;
+    if ((mClass == null) || mClass.isPrimitive() || mClass.isArray()) {
+      intent = new Intent(JavaClassActivity.this, JavaSpecialClassActivity.class);
+      intent.putExtra("jclass_name", mClassName);
+      Log.i(TAG, "start JavaSpecialClassActivity for " + mClassName);
+      startActivity(intent);
+      finish();
     } else {
       Log.i(TAG, "Got class info for " + mClassName);
-      setContentView(R.layout.jclass);
       
-      // First the elements that are set directly
+      // First the elements that are set directly in the prologue
       fillPrologue();
       
       // Now the elements that form part of the ExpandableListView
-      mResultsList = (ExpandableListView)findViewById(R.id.jcls_results_list);
-      fillInterfaces();
-      fillConstructors();
-      fillMethods();
-      fillFields();
-      fillClasses();      
-      setUpListView();
+      mAdapter.mInterfaces = mClass.getInterfaces();        
+      if (mIncInheritedConstructors) {
+        mAdapter.mConstructors = mClass.getConstructors();     
+      } else {
+        mAdapter.mConstructors = mClass.getDeclaredConstructors();
+      }
+      if (mIncInheritedMethods) {
+        mAdapter.mMethods = mClass.getMethods();     
+      } else {
+        mAdapter.mMethods = mClass.getDeclaredMethods();           
+      }
+      if (mIncInheritedFields) {
+        mAdapter.mFields = mClass.getFields();     
+      } else {
+        mAdapter.mFields = mClass.getDeclaredFields();
+      }
+      if (mIncInheritedClasses) {
+        mAdapter.mClasses = mClass.getClasses();     
+      } else {
+        mAdapter.mClasses = mClass.getDeclaredClasses();   
+      }
+      setListAdapter(mAdapter);
     }
   }
   
@@ -266,16 +241,19 @@ public class JavaClassActivity extends Activity {
   }
     
   private void fillPrologue() {
+    LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    View prologueView = inflater.inflate(R.layout.jclass_prologue, null);
     // Modifier display
     int modifiers = mClass.getModifiers();
     // Strip out interface bit as we display that separately
     String modDesc = getModifierString(modifiers & ~Modifier.INTERFACE);
-    ((TextView)findViewById(R.id.jcls_modifiers)).setText(modDesc);
-    ((TextView)findViewById(R.id.jcls_cls_or_if)).setText(mClass.isInterface() ? "interface" : "class");
+    
+    ((TextView)prologueView.findViewById(R.id.jcls_modifiers)).setText(modDesc);
+    ((TextView)prologueView.findViewById(R.id.jcls_cls_or_if)).setText(mClass.isInterface() ? "interface" : "class");
 
     // Class name display, including link to package
     SpannableString nameString = new SpannableString(mClassName);
-    TextView nameView = (TextView) findViewById(R.id.jcls_name);
+    TextView nameView = (TextView)prologueView.findViewById(R.id.jcls_name);
     Package pkg = mClass.getPackage();
     if (pkg != null) {
       Log.i(TAG, "Class is in package " + pkg);
@@ -301,7 +279,7 @@ public class JavaClassActivity extends Activity {
     if (superCls != null) {
       mSuperClassName = superCls.getName();
       Log.i(TAG, "superclass of " + mClassName + " is " + mSuperClassName);
-      ((TextView)findViewById(R.id.jcls_superclass)).setText(mSuperClassName);
+      ((TextView)prologueView.findViewById(R.id.jcls_superclass)).setText(mSuperClassName);
     } else {
       mSuperClassName = null;
     }
@@ -311,12 +289,14 @@ public class JavaClassActivity extends Activity {
     if (containingClass != null) {
       mContainingClassName = containingClass.getName();
       Log.i(TAG, "containing class for " + mClassName + " is " + mContainingClassName);
-      ((TextView)findViewById(R.id.jcls_containing_class)).setText(mContainingClassName);
-      findViewById(R.id.containing_class_layout).setVisibility(View.VISIBLE);     
+      ((TextView)prologueView.findViewById(R.id.jcls_containing_class)).setText(mContainingClassName);
+      prologueView.findViewById(R.id.containing_class_layout).setVisibility(View.VISIBLE);     
     } else {
       mContainingClassName = null;
-      findViewById(R.id.containing_class_layout).setVisibility(View.GONE);     
+      prologueView.findViewById(R.id.containing_class_layout).setVisibility(View.GONE);     
     }
+    ExpandableListView elv = getExpandableListView();
+    elv.addHeaderView(prologueView);
   }
   
   public void superClassClicked(View view) {
@@ -336,99 +316,44 @@ public class JavaClassActivity extends Activity {
     Log.i(TAG, "start JavaClassActivity for " + mContainingClassName);
     startActivity(intent);
   }
-  
-  public void componentClassClicked(View view) {
-    Log.i(TAG, "User clicked on component class name: " + mComponentClassName);
-    if (mComponentClassName == null) return;
-    Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
-    intent.putExtra("jclass_name", mComponentClassName);
-    Log.i(TAG, "start JavaClassActivity for " + mComponentClassName);
-    startActivity(intent);
-  }
-
-  private void fillInterfaces() {
-    mAdapter.mInterfaces = mClass.getInterfaces();        
-  }
-  
-  private void fillConstructors() {
-    if (mIncInheritedConstructors) {
-      mAdapter.mConstructors = mClass.getConstructors();     
-    } else {
-      mAdapter.mConstructors = mClass.getDeclaredConstructors();
+   
+  @Override
+  public boolean onChildClick(ExpandableListView parent, View v, 
+                              int groupPosition, int childPosition, long id) {
+    switch (groupPosition) {
+    case ClassListAdapter.INTERFACES: {  
+      Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
+      intent.putExtra("jclass_name", mAdapter.mInterfaces[childPosition].getName());
+      Log.i(TAG, "start JavaClassActivity for " + intent.getStringExtra("jclass_name"));
+      startActivity(intent);
+      return true;
     }
-  }
-  
-  private void fillMethods() {
-    if (mIncInheritedMethods) {
-      mAdapter.mMethods = mClass.getMethods();     
-    } else {
-      mAdapter.mMethods = mClass.getDeclaredMethods();           
+    case ClassListAdapter.CONSTRUCTORS: {
+      // TODO fill in launch of constructor display
+      return true;
     }
-  }
-  
-  private void fillFields() {
-    if (mIncInheritedFields) {
-      mAdapter.mFields = mClass.getFields();     
-    } else {
-      mAdapter.mFields = mClass.getDeclaredFields();
+    case ClassListAdapter.METHODS: {
+      // TODO: fill in launch of method display
+      return true;
     }
-  }
-  
-  private void fillClasses() {
-    if (mIncInheritedClasses) {
-      mAdapter.mClasses = mClass.getClasses();     
-    } else {
-      mAdapter.mClasses = mClass.getDeclaredClasses();   
+    case ClassListAdapter.FIELDS: {
+      Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
+      intent.putExtra("jclass_name", mAdapter.mFields[childPosition].getType().getName());
+      Log.i(TAG, "start JavaClassActivity for " + intent.getStringExtra("jclass_name"));
+      startActivity(intent);
+      return true; 
     }
-  }
-  
-
-  private void setUpListView() {
-    if (mResultsList == null) {
-      Log.e(TAG, "No results list to fill out!");
-      return;
+    case ClassListAdapter.CLASSES: {
+      Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
+      intent.putExtra("jclass_name", mAdapter.mClasses[childPosition].getName());
+      Log.i(TAG, "start JavaClassActivity for " + intent.getStringExtra("jclass_name"));
+      startActivity(intent); 
+      return true;
     }
-    mResultsList.setAdapter(mAdapter);
-    mResultsList.setOnChildClickListener(new OnChildClickListener() {
-      @Override
-      public boolean onChildClick(ExpandableListView parent, View v,
-                                  int groupPosition, int childPosition, long id) {
-        switch (groupPosition) {
-        case ClassListAdapter.INTERFACES: {  
-          Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
-          intent.putExtra("jclass_name", mAdapter.mInterfaces[childPosition].getName());
-          Log.i(TAG, "start JavaClassActivity for " + intent.getStringExtra("jclass_name"));
-          startActivity(intent);
-          return true;
-        }
-        case ClassListAdapter.CONSTRUCTORS: {
-          // TODO fill in launch of constructor display
-          return true;
-        }
-        case ClassListAdapter.METHODS: {
-          // TODO: fill in launch of method display
-          return true;
-        }
-        case ClassListAdapter.FIELDS: {
-          Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
-          intent.putExtra("jclass_name", mAdapter.mFields[childPosition].getType().getName());
-          Log.i(TAG, "start JavaClassActivity for " + intent.getStringExtra("jclass_name"));
-          startActivity(intent);
-          return true; 
-        }
-        case ClassListAdapter.CLASSES: {
-          Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);
-          intent.putExtra("jclass_name", mAdapter.mClasses[childPosition].getName());
-          Log.i(TAG, "start JavaClassActivity for " + intent.getStringExtra("jclass_name"));
-          startActivity(intent); 
-          return true;
-        }
-        default: {
-          Log.e(TAG, "Unknown group position " + groupPosition); 
-          return false;
-        }
-        }
-      }
-    });    
+    default: {
+      Log.e(TAG, "Unknown group position " + groupPosition); 
+      return false;
+    }
+    }
   }
 }
