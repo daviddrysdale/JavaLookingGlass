@@ -51,6 +51,8 @@ public class JavaSpecialClassActivity extends Activity {
         mClass = float.class;
       } else if (mClassName.equals("double")) {
         mClass = double.class;
+      } else if (mClassName.equals("void")) {
+        mClass = void.class;
       } else {
         Log.e(TAG, "Could not find class " + mClassName + ", error " + e);
         mClass = null;

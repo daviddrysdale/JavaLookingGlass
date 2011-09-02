@@ -1,3 +1,6 @@
+* DONE Make class entry first field
+  CLOSED: [2011-09-02 Fri 21:14]
+  Set focus to it automatically?
 * TODO Plumb in include inherited tickbox
   Make this a set of 4 options in a preferences screen
   Ideally, use color to indicate which fields/methods etc are inherited
@@ -38,7 +41,8 @@
   CLOSED: [2011-09-01 Thu 08:38]
   although this doesn't seem to work in Android
   Find package name as initial substring of class name; make it blue and link to package
-* TODO Method display
+* DONE Method display
+  CLOSED: [2011-09-02 Fri 21:14]
 * TODO Constructor display
 * DONE Retire pressed triangle PNG
   CLOSED: [2011-08-29 Mon 20:04]

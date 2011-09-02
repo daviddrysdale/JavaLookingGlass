@@ -31,7 +31,10 @@
                   android:label="Java Class">
         </activity>
                 
-        <activity android:name=".JavaClassConstructorActivity"
-                  android:label="Class Constructor" />
+        <activity android:name=".JavaConstructorActivity"
+                  android:label="Java Class Constructor" />  
+                              
+        <activity android:name=".JavaMethodActivity"
+                  android:label="Java Method" />
     </application>
 </manifest>

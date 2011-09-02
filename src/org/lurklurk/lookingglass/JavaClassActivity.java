@@ -21,7 +21,9 @@ import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
 public class JavaClassActivity extends ExpandableListActivity {
-  public class ClassListAdapter extends BaseExpandableListAdapter {
+  public class ClassListAdapter extends BaseExpandableListAdapter { 
+    private static final String TAG = "ClassListAdapter";
+    
     // Array index constants
     public static final int INTERFACES = 0;
     public static final int CONSTRUCTORS = 1;
@@ -165,11 +167,12 @@ public class JavaClassActivity extends ExpandableListActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     Log.i(TAG, "onCreate");
+    super.onCreate(savedInstanceState);
     Resources resources = getResources();
     mLinkColor = new ForegroundColorSpan(resources.getColor(R.color.link));
     mNameColor = new ForegroundColorSpan(resources.getColor(R.color.name));  
     mAdapter = new ClassListAdapter(mLinkColor, mNameColor);
-    super.onCreate(savedInstanceState);
+
     Intent intent = getIntent();
     mClassName = intent.getStringExtra("jclass_name");  
 
@@ -177,8 +180,7 @@ public class JavaClassActivity extends ExpandableListActivity {
       Log.e(TAG, "No package name");
       mClassName = "unknown";
     }
-    try
-    {
+    try {
       mClass = Class.forName(mClassName);
     } catch (ClassNotFoundException e) {
       Log.e(TAG, "Could not find class " + mClassName + ", error " + e);
@@ -331,12 +333,29 @@ public class JavaClassActivity extends ExpandableListActivity {
       return true;
     }
     case ClassListAdapter.CONSTRUCTORS: {
-      // TODO fill in launch of constructor display
+      // We can't parcel up the Constructor object, so include enough information to 
+      // find it again.
+      // TODO @@@ indicate constructor not method
+      Intent intent = new Intent(JavaClassActivity.this, JavaMethodActivity.class);
+      Method method = mAdapter.mMethods[childPosition];
+      intent.putExtra("jclass_name", mClassName);
+      intent.putExtra("include_inherited", mIncInheritedMethods);
+      intent.putExtra("index", childPosition);
+      Log.i(TAG, "start JavaMethodActivity for " + method);
+      startActivity(intent);
       return true;
     }
     case ClassListAdapter.METHODS: {
-      // TODO: fill in launch of method display
-      return true;
+      // We can't parcel up the Method object, so include enough information to 
+      // find it again.
+      Intent intent = new Intent(JavaClassActivity.this, JavaMethodActivity.class);
+      Method method = mAdapter.mMethods[childPosition];
+      intent.putExtra("jclass_name", mClassName);
+      intent.putExtra("include_inherited", mIncInheritedMethods);
+      intent.putExtra("index", childPosition);
+      Log.i(TAG, "start JavaMethodActivity for " + method);
+      startActivity(intent);
+      return true; 
     }
     case ClassListAdapter.FIELDS: {
       Intent intent = new Intent(JavaClassActivity.this, JavaClassActivity.class);

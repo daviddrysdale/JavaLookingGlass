@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) David Drysdale 2011.  GPLv2 licensed; see LICENSE. -->
+<LinearLayout 
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical"
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent">
+
+  <ScrollView
+     android:layout_width="wrap_content"
+     android:layout_height="0dp" 
+     android:layout_weight="1.0"
+     android:paddingTop="1dp">
+        
+    <RelativeLayout
+       android:layout_width="fill_parent"
+       android:layout_height="0dp"
+       android:layout_marginLeft="5dp"
+       android:layout_weight="1.0">
+
+    <LinearLayout 
+        android:orientation="vertical" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+       <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="0"
+          android:layout_marginTop="1dp"
+          android:layout_marginBottom="1dp">
+    <TextView android:id="@+id/jmethod_modifiers"
+       style="@android:style/TextAppearance.Medium"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="private "/>
+
+    <TextView android:id="@+id/jmethod_return_type"
+       style="@style/clickableMedium"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:clickable="true"
+       android:onClick="returnTypeClicked"
+       android:text="void"/>
+      </LinearLayout>
+               
+      <TextView android:id="@+id/jmethod_name"
+         style="@style/mainName"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="5dp"
+         android:layout_marginBottom="5dp"
+         android:layout_marginLeft="5dp"
+         android:text="methodName" />
+
+       <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="0"
+          android:layout_marginTop="3dp"
+          android:layout_marginBottom="3dp">
+         <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="declared in " />
+         <TextView android:id="@+id/jmethod_declaring_class"
+            style="@style/clickableMedium"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" 
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="declaringClassClicked"
+            android:text="&lt;unknown&gt;" />
+       </LinearLayout>
+       
+
+       </LinearLayout>
+    </RelativeLayout>
+  </ScrollView>
+</LinearLayout>
