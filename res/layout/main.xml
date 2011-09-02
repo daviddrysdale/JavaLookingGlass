@@ -25,8 +25,22 @@
          android:layout_marginBottom="5dp"
          android:layout_marginLeft="5dp"
          android:text="Java Reflection" />
-      <LinearLayout android:id="@+id/jpkg_layout" 
+      <LinearLayout android:id="@+id/jkls_layout" 
          android:layout_below="@id/java_head"
+         android:orientation="horizontal"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content">
+         <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find class:" />
+         <EditText android:id="@+id/lookup_class"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" 
+            android:layout_weight="1" />
+      </LinearLayout>
+      <LinearLayout android:id="@+id/jpkg_layout" 
+         android:layout_below="@id/jkls_layout"
          android:orientation="horizontal"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content">
@@ -46,23 +60,9 @@
          android:layout_width="wrap_content" 
          android:text="List all Java packages" 
          android:layout_gravity="center" />
-      <LinearLayout android:id="@+id/jkls_layout" 
-         android:layout_below="@id/list_packages"
-         android:orientation="horizontal"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content">
-         <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Find class:" />
-         <EditText android:id="@+id/lookup_class"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" 
-            android:layout_weight="1" />
-      </LinearLayout>
    
       <TextView android:id="@+id/android_head"
-         android:layout_below="@id/jkls_layout"
+         android:layout_below="@id/list_packages"
          style="@android:style/TextAppearance.Large"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
