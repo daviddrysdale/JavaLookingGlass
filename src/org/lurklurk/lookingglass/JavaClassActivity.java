@@ -281,7 +281,9 @@ public class JavaClassActivity extends ExpandableListActivity {
       Log.i(TAG, "superclass of " + mClassName + " is " + mSuperClassName);
       ((TextView)prologueView.findViewById(R.id.jcls_superclass)).setText(mSuperClassName);
     } else {
+      Log.i(TAG, "no superclass of " + mClassName);
       mSuperClassName = null;
+      prologueView.findViewById(R.id.superclass_layout).setVisibility(View.GONE);
     }
     
     // Containing class display (for inner classes)
