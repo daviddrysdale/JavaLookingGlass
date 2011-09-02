@@ -43,7 +43,8 @@
   Find package name as initial substring of class name; make it blue and link to package
 * DONE Method display
   CLOSED: [2011-09-02 Fri 21:14]
-* TODO Constructor display
+* DONE Constructor display
+  CLOSED: [2011-09-02 Fri 21:56]
 * DONE Retire pressed triangle PNG
   CLOSED: [2011-08-29 Mon 20:04]
 * DONE Changing orientation should remember which sections are expanded  

@@ -335,8 +335,7 @@ public class JavaClassActivity extends ExpandableListActivity {
     case ClassListAdapter.CONSTRUCTORS: {
       // We can't parcel up the Constructor object, so include enough information to 
       // find it again.
-      // TODO @@@ indicate constructor not method
-      Intent intent = new Intent(JavaClassActivity.this, JavaMethodActivity.class);
+      Intent intent = new Intent(JavaClassActivity.this, JavaConstructorActivity.class);
       Method method = mAdapter.mMethods[childPosition];
       intent.putExtra("jclass_name", mClassName);
       intent.putExtra("include_inherited", mIncInheritedMethods);
