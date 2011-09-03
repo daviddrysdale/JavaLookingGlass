@@ -18,4 +18,10 @@ that the Dalvik classloader will prefer these system-installed libraries to any
 versions of the same libraries that come as part of an application's APK file.
 
 So it's useful to discover what libraries are present in the Android system, waiting like
-a depth charge to [http://code.google.com/p/libphonenumber/issues/detail?id=47](sabotage) your app...
+a depth charge to [sabotage](http://code.google.com/p/libphonenumber/issues/detail?id=47) your app...
+
+*Note*: The app includes wrappers for
+ [java.lang.Package](http://download.oracle.com/javase/1.4.2/docs/api/java/lang/Package.html)
+ information, but this doesn't appear to work &ndash; `Package.getPackages()` returns nothing, and
+ `Package.getPackage(name)` always returns a Package object with no information in it, even for non-existent
+ package names.
