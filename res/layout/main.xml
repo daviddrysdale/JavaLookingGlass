@@ -60,7 +60,7 @@
          android:layout_width="wrap_content" 
          android:text="List all Java packages" 
          android:layout_gravity="center" />
-   
+<!--    
       <TextView android:id="@+id/android_head"
          android:layout_below="@id/list_packages"
          style="@android:style/TextAppearance.Large"
@@ -82,6 +82,7 @@
          android:layout_width="wrap_content" 
          android:text="List Android packages" 
          android:layout_gravity="center" />
+-->         
     </RelativeLayout>
   </ScrollView>
 </LinearLayout>

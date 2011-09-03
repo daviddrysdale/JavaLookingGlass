@@ -1,8 +1,15 @@
 /* Copyright (c) David Drysdale 2011.  GPLv2 licensed; see LICENSE. */
 package org.lurklurk.lookingglass;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.ComponentInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageItemInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -21,6 +28,7 @@ public class LookingGlassActivity extends Activity {
     Log.i(TAG, "onCreate");
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
+    
     // Plumb package name entry through to JavaPackageActivity
     final EditText jpkgEntry = (EditText)findViewById(R.id.lookup_package);
     jpkgEntry.setOnKeyListener(new OnKeyListener() {
@@ -39,6 +47,7 @@ public class LookingGlassActivity extends Activity {
         }
       }
     });
+    
     // Plumb class name entry through to JavaClassActivity
     final EditText jclsEntry = (EditText)findViewById(R.id.lookup_class);
     jclsEntry.setOnKeyListener(new OnKeyListener() {
@@ -57,12 +66,54 @@ public class LookingGlassActivity extends Activity {
         }
       }
     });
+    PackageManager pm = getPackageManager();
+    List<ApplicationInfo> apps = pm.getInstalledApplications(0);
+    for (ApplicationInfo app: apps) {
+      describeApplication("app.", app);
+    }
+    
+    List<PackageInfo> pkgs = pm.getInstalledPackages(0);
+    for (PackageInfo pkg: pkgs) {
+      Log.d(TAG, "pkg.packageName=" + pkg.packageName);
+      if (pkg.activities != null) {
+        for (int ii=0; ii<pkg.activities.length; ii++) {
+          String prefix = "  pkg.activities[" + ii + "].";
+          Log.d(TAG, prefix + "permission=" + pkg.activities[ii].permission);
+          describeComponent(prefix, pkg.activities[ii]);
+        }
+      }
+    } 
   }
+  
+  private void describeApplication(String prefix, ApplicationInfo app) {
+    Log.d(TAG, prefix + "className=" + app.className);
+    Log.d(TAG, prefix + "publicSourceDir=" + app.publicSourceDir);
+    Log.d(TAG, prefix + "sourceDir=" + app.sourceDir);
+    if (app.sharedLibraryFiles != null) {
+      for (int ii = 0; ii < app.sharedLibraryFiles.length; ii++) {
+        Log.d(TAG, "  " + prefix + "sharedLibraryFiles[" + ii +"]=" + app.sharedLibraryFiles[ii]);
+      }
+    }
+    
+  }
+  private void describeComponent(String prefix, ComponentInfo component) {
+    Log.d(TAG, prefix + "processName=" + component.processName);
+    Log.d(TAG, prefix + "exported=" + component.exported);
+    Log.d(TAG, prefix + "enabled=" + component.enabled);
+    describeApplication(prefix+"applicationInfo.", component.applicationInfo);
+    describeItem(prefix, component);
+  }
+  private void describeItem(String prefix, PackageItemInfo item) {
+    Log.d(TAG, prefix + "name=" + item.name);
+    Log.d(TAG, prefix + "packageName=" + item.packageName);
+  }
+  
   public void listJavaPackages(View view) {
     Log.i(TAG, "start JavaPackageListActivity");
     Intent intent = new Intent(LookingGlassActivity.this, JavaPackageListActivity.class);
     startActivity(intent);
   }
+  
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater inflater = getMenuInflater();
