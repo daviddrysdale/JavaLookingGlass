@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.EditText;
@@ -60,4 +63,21 @@ public class LookingGlassActivity extends Activity {
     Intent intent = new Intent(LookingGlassActivity.this, JavaPackageListActivity.class);
     startActivity(intent);
   }
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu, menu);
+    return true;
+  }
+  
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+          case R.id.settings:
+            startActivity(new Intent(this, LookingGlassPreferences.class));
+            break;
+      }
+      return true;
+  }
+  
 }

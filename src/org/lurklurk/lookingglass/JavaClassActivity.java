@@ -6,12 +6,17 @@ import java.lang.reflect.*;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -168,6 +173,19 @@ public class JavaClassActivity extends ExpandableListActivity {
   public void onCreate(Bundle savedInstanceState) {
     Log.i(TAG, "onCreate");
     super.onCreate(savedInstanceState);
+    
+    // Retrieve preferences about whether to show inherited items
+    SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+    mIncInheritedConstructors = sharedPrefs.getBoolean("inc_inherit_constructor", false);
+    mIncInheritedMethods = sharedPrefs.getBoolean("inc_inherit_method", false);
+    mIncInheritedFields = sharedPrefs.getBoolean("inc_inherit_field", false);
+    mIncInheritedClasses = sharedPrefs.getBoolean("inc_inherit_class", false);
+    Log.d(TAG, "Include inherited" + 
+          " constructors:" + mIncInheritedConstructors +
+          " methods:" + mIncInheritedMethods +
+          " fields:" + mIncInheritedFields +
+          " classes:" + mIncInheritedClasses);
+    
     Resources resources = getResources();
     mLinkColor = new ForegroundColorSpan(resources.getColor(R.color.link));
     mNameColor = new ForegroundColorSpan(resources.getColor(R.color.name));  
@@ -223,6 +241,23 @@ public class JavaClassActivity extends ExpandableListActivity {
       }
       setListAdapter(mAdapter);
     }
+  }
+  
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu, menu);
+    return true;
+  }
+  
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+          case R.id.settings:
+            startActivity(new Intent(this, LookingGlassPreferences.class));
+            break;
+      }
+      return true;
   }
   
   public static String getModifierString(int modifiers) {

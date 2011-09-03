@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  <PreferenceCategory
+     android:title="Include Inherited Class Items"
+     android:key="inc_inherit_category">
+    <CheckBoxPreference
+       android:key="inc_inherit_constructor"
+       android:summary="Include inherited constructors"
+       android:title="Constructors"
+       android:defaultValue="false" />
+    <CheckBoxPreference
+       android:key="inc_inherit_method"
+       android:summary="Include inherited methods"
+       android:title="Methods"
+       android:defaultValue="false" />
+    <CheckBoxPreference
+       android:key="inc_inherit_field"
+       android:summary="Include inherited fields"
+       android:title="Fields"
+       android:defaultValue="false" />
+    <CheckBoxPreference
+       android:key="inc_inherit_class"
+       android:summary="Include inherited classes"
+       android:title="Classes"
+       android:defaultValue="false" />
+  </PreferenceCategory>
+</PreferenceScreen>

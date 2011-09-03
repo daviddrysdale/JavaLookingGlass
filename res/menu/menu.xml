@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) David Drysdale 2011.  GPLv2 licensed; see LICENSE. -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/settings"
+          android:title="Settings"
+          android:icon="@drawable/settings"></item>
+</menu>

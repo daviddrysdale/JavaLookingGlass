@@ -1,7 +1,8 @@
 * DONE Make class entry first field
   CLOSED: [2011-09-02 Fri 21:14]
   Set focus to it automatically?
-* TODO Plumb in include inherited tickbox
+* DONE Plumb in include inherited tickbox
+  CLOSED: [2011-09-03 Sat 10:27]
   Make this a set of 4 options in a preferences screen
   Ideally, use color to indicate which fields/methods etc are inherited
 * DONE Cope with array types; include getComponentType()/isArray()

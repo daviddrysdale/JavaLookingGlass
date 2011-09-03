@@ -36,5 +36,8 @@
                               
         <activity android:name=".JavaMethodActivity"
                   android:label="Java Method" />
+                  
+        <activity android:name=".LookingGlassPreferences"
+                  android:label="Settings" />          
     </application>
 </manifest>
